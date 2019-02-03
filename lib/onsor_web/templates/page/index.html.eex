@@ -1,0 +1,18 @@
+<section class="phx-hero">
+  <h1><%= gettext "%{name}!", name: "Onsor" %></h1>
+  <p>Where materials meet creativity.</p>
+</section>
+
+<section class="row">
+  <article class="column">
+    <h2>Resources</h2>
+    <ul>
+      <li>
+        <%= link "Vendors", to: Routes.vendor_path(@conn, :index) %>
+      </li>
+      <li>
+        <%= link "Materials", to: Routes.material_path(@conn, :index) %>
+      </li>
+    </ul>
+  </article>
+</section>

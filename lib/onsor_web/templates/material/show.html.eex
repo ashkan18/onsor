@@ -1,0 +1,28 @@
+<h1>Show Material</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @material.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @material.description %>
+  </li>
+
+  <li>
+    <strong>Unit:</strong>
+    <%= @material.unit %>
+  </li>
+
+  <li>
+    <strong>Compositions:</strong>
+    <%= @material.compositions %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.material_path(@conn, :edit, @material) %></span>
+<span><%= link "Back", to: Routes.material_path(@conn, :index) %></span>
