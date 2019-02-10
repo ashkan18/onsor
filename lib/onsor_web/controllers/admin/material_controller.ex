@@ -1,4 +1,4 @@
-defmodule OnsorWeb.MaterialController do
+defmodule OnsorWeb.Admin.MaterialController do
   use OnsorWeb, :controller
 
   alias Onsor.Materials

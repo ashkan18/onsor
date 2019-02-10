@@ -1,4 +1,4 @@
-defmodule OnsorWeb.PageController do
+defmodule OnsorWeb.Admin.DashboardController do
   use OnsorWeb, :controller
 
   def index(conn, _params) do

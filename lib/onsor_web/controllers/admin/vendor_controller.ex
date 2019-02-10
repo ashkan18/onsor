@@ -1,4 +1,4 @@
-defmodule OnsorWeb.VendorController do
+defmodule OnsorWeb.Admin.VendorController do
   use OnsorWeb, :controller
 
   alias Onsor.Partners

@@ -19,9 +19,9 @@ defmodule OnsorWeb.Router do
   scope "/admin", OnsorWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    resources "/vendors", VendorController
-    resources "/materials", MaterialController
+    get "/", Admin.DashboardController, :index
+    resources "/vendors", Admin.VendorController
+    resources "/materials", Admin.MaterialController
   end
 
   # Other scopes may use custom stacks.
@@ -30,5 +30,10 @@ defmodule OnsorWeb.Router do
 
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: OnsorWeb.Schema
     forward "/", Absinthe.Plug, schema: OnsorWeb.Schema
+  end
+
+  scope "/", OnsorWeb.Materialist do
+    pipe_through :browser
+    get "/*path", HomeController, :index
   end
 end
