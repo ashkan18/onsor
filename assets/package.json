@@ -7,7 +7,13 @@
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
-    "phoenix_html": "file:../deps/phoenix_html"
+    "phoenix_html": "file:../deps/phoenix_html",
+    "yarn": "^1.13.0",
+    "@artsy/palette": "^2.32.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-router": "^4.2.0",
+    "styled-components": "^2 || ^3"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

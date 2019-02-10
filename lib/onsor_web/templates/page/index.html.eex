@@ -1,5 +1,5 @@
 <section class="phx-hero">
-  <h1><%= gettext "%{name}!", name: "Onsor" %></h1>
+  <h1>The Materialist </h1>
   <p>Where materials meet creativity.</p>
 </section>
 
