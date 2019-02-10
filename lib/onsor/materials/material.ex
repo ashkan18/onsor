@@ -16,6 +16,6 @@ defmodule Onsor.Materials.Material do
   def changeset(material, attrs) do
     material
     |> cast(attrs, [:name, :description, :unit, :compositions])
-    |> validate_required([:name, :description, :unit, :compositions])
+    |> validate_required([:name, :description, :unit])
   end
 end

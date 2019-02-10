@@ -1,7 +1,9 @@
 defmodule OnsorWeb.Schema do
   use Absinthe.Schema
 
+  import_types OnsorWeb.Schema.JSON
   import_types OnsorWeb.Schema.PartnerTypes
+  import_types OnsorWeb.Schema.MaterialTypes
 
   alias OnsorWeb.Resolvers
 
@@ -10,6 +12,11 @@ defmodule OnsorWeb.Schema do
     @desc "Get all vendors"
     field :vendors, list_of(:vendor) do
       resolve &Resolvers.Partner.vendors/3
+    end
+
+    @desc "Get All Materials"
+    field :materials, list_of(:material) do
+      resolve &Resolvers.Material.get_all/3
     end
   end
 end

@@ -6,12 +6,13 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "@artsy/palette": "^2.32.2",
+    "@artsy/palette": "^2.37.24",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.3.1",
     "styled-components": "^2 || ^3",
     "yarn": "^1.13.0"
   },
@@ -22,6 +23,9 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@types/react-router-dom": "^4.3.1",
     "babel-loader": "^8.0.0",
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",

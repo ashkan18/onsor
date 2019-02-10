@@ -18,27 +18,22 @@ import "phoenix_html"
 
 import React from "react"
 import ReactDOM from "react-dom"
+import Home from "./materialist/pages/home"
+import { Theme, injectGlobalStyles } from "@artsy/palette"
 
+const GlobalStyles = injectGlobalStyles()
 
 class App extends React.Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Route exact path="/" component={Home}/>
-          <Route path="/login" component={Login}/>
-        </div>
-      </Router>
+      <Theme>
+        <Home/>
+      </Theme>
     )
   }
 }
 
-class HelloReact extends React.Component {
-  render() {
-    return (<h1>Hello React!</h1>)
-  }
-}
 ReactDOM.render(
-  <HelloReact/>,
+  <App/>,
   document.getElementById("react-app")
 )
