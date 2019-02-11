@@ -18,5 +18,11 @@ defmodule OnsorWeb.Schema do
     field :materials, list_of(:material) do
       resolve &Resolvers.Material.get_all/3
     end
+
+    @desc "Find material by id"
+    field :material, :material do
+      arg :id, non_null(:id)
+      resolve &Resolvers.Material.find_material/3
+    end
   end
 end

@@ -1,4 +1,4 @@
-import { BorderBox, Flex, Sans, Serif } from '@artsy/palette'
+import { BorderBox, Flex, Sans, Serif, Button } from '@artsy/palette'
 import React from "react"
 
 interface Props {
@@ -8,13 +8,13 @@ interface Props {
 
 const MaterialBrick = (props: Props) => {
   return (
-    <Flex>
-      <BorderBox p={2}>
-        <Sans size='3t'>
-          {props.material.name}
-        </Sans>
-      </BorderBox>
-    </Flex>
+    <BorderBox p={2} width="50%">
+      <Flex flexDirection="column" >
+        <Sans size='3t'> {props.material.name}</Sans>
+        <Sans size='2'> {props.material.description}</Sans>
+        <Button size="small" my={1} width={100}>Contact</Button>
+      </Flex>
+    </BorderBox>
   )
 }
 

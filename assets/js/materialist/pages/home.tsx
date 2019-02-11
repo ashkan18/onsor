@@ -2,10 +2,11 @@ import * as React from "react"
 import { Spinner } from "@artsy/palette"
 import MaterialService from "../services/material_service"
 import MaterialBrick from "../components/material_brick";
+import Material from "../models/material";
 
 
 interface State {
-  materials: Array<any>
+  materials: Array<Material>
   isLoaded: boolean
   searchTerm: string | null
 }
@@ -13,7 +14,7 @@ interface State {
 export default class Home extends React.Component<{}, State>{
   MaterialService: MaterialService
 
-  public constructor(props, context) {
+  public constructor(props: {}, context: any) {
     super(props, context)
     this.MaterialService = new MaterialService()
     this.state = {
@@ -32,7 +33,7 @@ export default class Home extends React.Component<{}, State>{
       return( <Spinner size="medium"/> )
     } else {
       return( <>
-          {this.state.materials.map( m => <MaterialBrick key={m.id} material={m}/> )}
+          {materials.map( m => <MaterialBrick key={m.id} material={m}/> )}
         </>
       )
     }
