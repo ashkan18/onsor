@@ -14,8 +14,29 @@ defmodule OnsorWeb.Schema do
       resolve &Resolvers.Partner.vendors/3
     end
 
+    @desc "Get types"
+    field :types, list_of(:string) do
+      resolve &Resolvers.Material.types/3
+    end
+
+    @desc "Get textures"
+    field :textures, list_of(:string) do
+      resolve &Resolvers.Material.textures/3
+    end
+
+    @desc "Get finishes"
+    field :finishes, list_of(:string) do
+      resolve &Resolvers.Material.finishes/3
+    end
+
+
     @desc "Get All Materials"
     field :materials, list_of(:material) do
+      arg :type, :string # fabric/wood/
+      arg :composition, :string # polyester
+      arg :color, :string
+      arg :texture, :string # matt/glossy
+      arg :finish, :string # texture
       resolve &Resolvers.Material.get_all/3
     end
 

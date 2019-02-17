@@ -19,7 +19,7 @@ defmodule OnsorWeb.Admin.MaterialController do
       {:ok, material} ->
         conn
         |> put_flash(:info, "Material created successfully.")
-        |> redirect(to: Routes.material_path(conn, :show, material))
+        |> redirect(to: Routes.material_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

@@ -8,8 +8,6 @@ interface Props {
   materialId: string
 }
 
-
-
 interface State {
   isLoaded: boolean
   material?: Material

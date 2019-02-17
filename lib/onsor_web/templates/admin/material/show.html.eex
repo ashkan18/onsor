@@ -14,7 +14,7 @@
 
   <li>
     <strong>Unit:</strong>
-    <%= @material.unit %>
+    <%= @material.size_unit %>
   </li>
 
   <li>

@@ -19,6 +19,9 @@ export default class MaterialService {
                 id
                 name
                 description
+                texture
+                finish
+                type
               }
             }
           `
@@ -31,6 +34,30 @@ export default class MaterialService {
         return rejected(error)
       })
     )
+  }
+
+  public getFilters(): Promise<any> {
+    return new Promise((resolve, rejected) =>
+      axios({
+        url: "/api",
+        method: "post",
+        data: {
+          query: `
+            query filters{
+              types
+              textures
+              finishes
+            }
+          `
+        }
+      })
+      .then( response => {
+        console.log(response)
+        return resolve(response.data.data)
+      })
+      .catch( error => {
+        return rejected(error)
+      }))
   }
 
   public findMaterial(id: string): Promise<Material> {

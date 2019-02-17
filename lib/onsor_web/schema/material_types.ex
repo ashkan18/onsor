@@ -7,6 +7,10 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :name, :string
     field :composition, :json
     field :description, :string
-    field :unit, :string
+    field :size_unit, :string
+    field :type, :string
+    field :colors, :json
+    field :finish, :string
+    field :texture, :string
   end
 end
