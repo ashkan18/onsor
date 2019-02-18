@@ -32,12 +32,12 @@ defmodule OnsorWeb.Schema do
 
     @desc "Get All Materials"
     field :materials, list_of(:material) do
-      arg :type, :string # fabric/wood/
+      arg :types, list_of(:string) # fabric/wood/
       arg :composition, :string # polyester
-      arg :color, :string
-      arg :texture, :string # matt/glossy
-      arg :finish, :string # texture
-      resolve &Resolvers.Material.get_all/3
+      arg :colors, :string
+      arg :textures, list_of(:string) # matt/glossy
+      arg :finishes, list_of(:string) # texture
+      resolve &Resolvers.Material.search_filter/3
     end
 
     @desc "Find material by id"

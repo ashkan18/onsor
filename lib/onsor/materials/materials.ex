@@ -17,9 +17,35 @@ defmodule Onsor.Materials do
       [%Material{}, ...]
 
   """
-  def list_materials do
-    Repo.all(Material)
+  def filter_search_materials(args) do
+    Material
+    |> filter_by_types(args)
+    |> filter_by_textures(args)
+    |> filter_by_types(args)
+    |> Repo.all
   end
+
+  def filter_by_types(query, %{types: []}), do: query
+  def filter_by_types(query, %{types: types}) do
+    from material in query,
+    where: material.type in ^types
+  end
+  def filter_by_types(query, _), do: query
+
+
+  def filter_by_textures(query, %{textures: []}), do: query
+  def filter_by_textures(query, %{textures: textures}) do
+    from material in query,
+    where: material.type in ^textures
+  end
+  def filter_by_textures(query, _), do: query
+
+  def filter_by_finishes(query, %{finishes: []}), do: query
+  def filter_by_finishes(query, %{finishes: finishes}) do
+    from material in query,
+    where: material.type in ^finishes
+  end
+  def filter_by_finishes(query, _), do: query
 
   @doc """
   Gets a single material.

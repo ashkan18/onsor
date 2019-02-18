@@ -1,6 +1,7 @@
 defmodule OnsorWeb.Resolvers.Material do
-  def get_all(_parent, _arts, _resolution) do
-    {:ok, Onsor.Materials.list_materials()}
+  def search_filter(_parent, args, _resolution) do
+    IO.inspect(args)
+    {:ok, Onsor.Materials.filter_search_materials(args)}
   end
 
   def find_material(_parent, %{id: id}, _resolution) do

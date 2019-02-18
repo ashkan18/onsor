@@ -5,7 +5,7 @@ defmodule OnsorWeb.Admin.MaterialController do
   alias Onsor.Materials.Material
 
   def index(conn, _params) do
-    materials = Materials.list_materials()
+    materials = Materials.filter_search_materials(%{})
     render(conn, "index.html", materials: materials)
   end
 
