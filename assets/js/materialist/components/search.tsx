@@ -23,7 +23,7 @@ export default class Search extends React.Component<{}, State>{
     this.MaterialService = new MaterialService()
     this.state = {
       materials: [],
-      types: ["ceramic", "glass"],
+      types: [],
       textures: [],
       finishes: [],
       isLoaded: false,
@@ -41,9 +41,9 @@ export default class Search extends React.Component<{}, State>{
       return( <Spinner size="medium"/> )
     } else {
       return(
-        <Flex flexDirection="row" justifyContent="space-between" flexGrow={1}>
+        <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Filters types={this.state.types} textures={this.state.textures} finishes={this.state.finishes}/>
-          <MaterialWall materials={this.state.materials} />
+          <MaterialWall materials={this.state.materials}/>
         </Flex>
       )
     }

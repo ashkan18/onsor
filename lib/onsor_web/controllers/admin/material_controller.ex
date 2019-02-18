@@ -16,7 +16,7 @@ defmodule OnsorWeb.Admin.MaterialController do
 
   def create(conn, %{"material" => material_params}) do
     case Materials.create_material(material_params) do
-      {:ok, material} ->
+      {:ok, _material} ->
         conn
         |> put_flash(:info, "Material created successfully.")
         |> redirect(to: Routes.material_path(conn, :index))
