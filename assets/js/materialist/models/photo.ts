@@ -1,6 +1,6 @@
-export default interface Material{
+export default interface Photo{
   small: string
   large: string
   medium: string
-  is_defualt: boolean
+  isDefault: boolean
 }

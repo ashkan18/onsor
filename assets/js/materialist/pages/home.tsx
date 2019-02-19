@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Spinner, Flex } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import Search from "../components/search";
 
 

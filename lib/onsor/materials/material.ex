@@ -21,12 +21,12 @@ defmodule Onsor.Materials.Material do
     timestamps()
   end
 
-  @required_fields ~w(name type size_unit finish texture photos)a
+  @required_fields ~w(name type size_unit finish texture)a
   @optional_fields ~w(description compositions colors photos)a
   @doc false
   def changeset(material, attrs) do
     material
-    |> cast(attrs, @required_fields, @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
   end
 end

@@ -68,8 +68,6 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :onsor, Onsor.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "onsor_dev",
   hostname: "localhost",
   pool_size: 10
