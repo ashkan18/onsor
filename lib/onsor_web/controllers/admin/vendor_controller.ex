@@ -19,7 +19,7 @@ defmodule OnsorWeb.Admin.VendorController do
       {:ok, vendor} ->
         conn
         |> put_flash(:info, "Vendor created successfully.")
-        |> redirect(to: Routes.vendor_path(conn, :show, vendor))
+        |> redirect(to: Routes.admin_vendor_path(conn, :show, vendor))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -44,7 +44,7 @@ defmodule OnsorWeb.Admin.VendorController do
       {:ok, vendor} ->
         conn
         |> put_flash(:info, "Vendor updated successfully.")
-        |> redirect(to: Routes.vendor_path(conn, :show, vendor))
+        |> redirect(to: Routes.admin_vendor_path(conn, :show, vendor))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", vendor: vendor, changeset: changeset)
@@ -57,6 +57,6 @@ defmodule OnsorWeb.Admin.VendorController do
 
     conn
     |> put_flash(:info, "Vendor deleted successfully.")
-    |> redirect(to: Routes.vendor_path(conn, :index))
+    |> redirect(to: Routes.admin_vendor_path(conn, :index))
   end
 end

@@ -8,10 +8,10 @@
     <h2>Resources</h2>
     <ul>
       <li>
-        <%= link "Vendors", to: Routes.vendor_path(@conn, :index) %>
+        <%= link "Vendors", to: Routes.admin_vendor_path(@conn, :index) %>
       </li>
       <li>
-        <%= link "Materials", to: Routes.material_path(@conn, :index) %>
+        <%= link "Materials", to: Routes.admin_material_path(@conn, :index) %>
       </li>
     </ul>
   </article>

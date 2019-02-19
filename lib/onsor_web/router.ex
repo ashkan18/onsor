@@ -16,7 +16,7 @@ defmodule OnsorWeb.Router do
       json_decoder: Poison
   end
 
-  scope "/admin", OnsorWeb do
+  scope "/admin", OnsorWeb, as: :admin do
     pipe_through :browser
 
     get "/", Admin.DashboardController, :index

@@ -9,5 +9,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: Routes.vendor_path(@conn, :edit, @vendor) %></span>
-<span><%= link "Back", to: Routes.vendor_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.admin_vendor_path(@conn, :edit, @vendor) %></span>
+<span><%= link "Back", to: Routes.admin_vendor_path(@conn, :index) %></span>

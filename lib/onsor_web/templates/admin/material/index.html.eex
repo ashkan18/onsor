@@ -20,13 +20,13 @@
       <td><%= material.compositions %></td>
 
       <td>
-        <%= link "Show", to: Routes.material_path(@conn, :show, material) %>
-        <%= link "Edit", to: Routes.material_path(@conn, :edit, material) %>
-        <%= link "Delete", to: Routes.material_path(@conn, :delete, material), method: :delete, data: [confirm: "Are you sure?"] %>
+        <%= link "Show", to: Routes.admin_material_path(@conn, :show, material) %>
+        <%= link "Edit", to: Routes.admin_material_path(@conn, :edit, material) %>
+        <%= link "Delete", to: Routes.admin_material_path(@conn, :delete, material), method: :delete, data: [confirm: "Are you sure?"] %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Material", to: Routes.material_path(@conn, :new) %></span>
+<span><%= link "New Material", to: Routes.admin_material_path(@conn, :new) %></span>

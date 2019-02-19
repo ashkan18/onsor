@@ -19,7 +19,7 @@ defmodule OnsorWeb.Admin.MaterialController do
       {:ok, _material} ->
         conn
         |> put_flash(:info, "Material created successfully.")
-        |> redirect(to: Routes.material_path(conn, :index))
+        |> redirect(to: Routes.admin_material_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -31,7 +31,7 @@ defmodule OnsorWeb.Admin.MaterialController do
          _ <- Onsor.Materials.add_material_photo(material, photo_url, is_default) do
       conn
       |> put_flash(:info, "Photo Uploaded.")
-      |> redirect(to: Routes.material_path(conn, :show, material))
+      |> redirect(to: Routes.admin_material_path(conn, :show, material))
     end
   end
 
@@ -53,7 +53,7 @@ defmodule OnsorWeb.Admin.MaterialController do
       {:ok, material} ->
         conn
         |> put_flash(:info, "Material updated successfully.")
-        |> redirect(to: Routes.material_path(conn, :show, material))
+        |> redirect(to: Routes.admin_material_path(conn, :show, material))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", material: material, changeset: changeset)
@@ -66,6 +66,6 @@ defmodule OnsorWeb.Admin.MaterialController do
 
     conn
     |> put_flash(:info, "Material deleted successfully.")
-    |> redirect(to: Routes.material_path(conn, :index))
+    |> redirect(to: Routes.admin_material_path(conn, :index))
   end
 end
