@@ -1,4 +1,3 @@
-
 export default interface Material{
   id: string
   name: string
@@ -7,4 +6,5 @@ export default interface Material{
   finish: string
   type: string
   sizeUnit: string
+  photos: Array<Photo>
 }

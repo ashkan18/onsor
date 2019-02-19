@@ -26,6 +26,15 @@ defmodule OnsorWeb.Admin.MaterialController do
     end
   end
 
+  def upload(conn, %{"material_id" => material_id, "material" => %{"photo_url" => photo_url, "is_default" => is_default }}) do
+    with material <- Onsor.Materials.get_material!(material_id),
+         _ <- Onsor.Materials.add_material_photo(material, photo_url, is_default) do
+      conn
+      |> put_flash(:info, "Photo Uploaded.")
+      |> redirect(to: Routes.material_path(conn, :show, material))
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     material = Materials.get_material!(id)
     render(conn, "show.html", material: material)

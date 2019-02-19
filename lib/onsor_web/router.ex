@@ -21,7 +21,9 @@ defmodule OnsorWeb.Router do
 
     get "/", Admin.DashboardController, :index
     resources "/vendors", Admin.VendorController
-    resources "/materials", Admin.MaterialController
+    resources "/materials", Admin.MaterialController do
+      put "/upload",  Admin.MaterialController, :upload
+    end
   end
 
   # Other scopes may use custom stacks.

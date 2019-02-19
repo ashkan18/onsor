@@ -29,6 +29,7 @@ export default class MaterialService {
                 texture
                 finish
                 type
+                photos
               }
             }
           `,
@@ -84,6 +85,7 @@ export default class MaterialService {
                 id
                 name
                 description
+                photos
               }
             }
           `

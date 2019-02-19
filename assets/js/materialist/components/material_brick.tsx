@@ -12,6 +12,7 @@ const MaterialBrick = (props: Props) => {
       <Flex flexDirection="column">
         <Sans size='3t'> {props.material.name}</Sans>
         <Sans size='2'> {props.material.type}</Sans>
+        { props.material.photos.length > 0 ? <img src={props.material.photos[0]["medium"]}/> : '' }
         <Button size="small" my={1} width={100}>Contact</Button>
       </Flex>
     </BorderBox>

@@ -12,5 +12,6 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :colors, :json
     field :finish, :string
     field :texture, :string
+    field :photos, :json
   end
 end

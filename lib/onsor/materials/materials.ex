@@ -9,11 +9,11 @@ defmodule Onsor.Materials do
   alias Onsor.Materials.Material
 
   @doc """
-  Returns the list of materials.
+  Returns the list of materials based on input filters.
 
   ## Examples
 
-      iex> list_materials()
+      iex> filter_search_materials()
       [%Material{}, ...]
 
   """
@@ -21,31 +21,50 @@ defmodule Onsor.Materials do
     Material
     |> filter_by_types(args)
     |> filter_by_textures(args)
-    |> filter_by_types(args)
+    |> filter_by_finishes(args)
     |> Repo.all
   end
 
-  def filter_by_types(query, %{types: []}), do: query
-  def filter_by_types(query, %{types: types}) do
+  defp filter_by_types(query, %{types: []}), do: query
+  defp filter_by_types(query, %{types: types}) do
     from material in query,
     where: material.type in ^types
   end
-  def filter_by_types(query, _), do: query
+  defp filter_by_types(query, _), do: query
 
 
-  def filter_by_textures(query, %{textures: []}), do: query
-  def filter_by_textures(query, %{textures: textures}) do
+  defp filter_by_textures(query, %{textures: []}), do: query
+  defp filter_by_textures(query, %{textures: textures}) do
     from material in query,
     where: material.type in ^textures
   end
-  def filter_by_textures(query, _), do: query
+  defp filter_by_textures(query, _), do: query
 
-  def filter_by_finishes(query, %{finishes: []}), do: query
-  def filter_by_finishes(query, %{finishes: finishes}) do
+  defp filter_by_finishes(query, %{finishes: []}), do: query
+  defp filter_by_finishes(query, %{finishes: finishes}) do
     from material in query,
     where: material.type in ^finishes
   end
-  def filter_by_finishes(query, _), do: query
+  defp filter_by_finishes(query, _), do: query
+
+
+  def add_material_photo(material, photo_url, default \\ false) do
+    with {:ok, file} <- Onsor.MaterialPhoto.store({photo_url, material}),
+          all_photos <-  [%{
+                          original: Onsor.MaterialPhoto.url({file, material}, :original),
+                          small: Onsor.MaterialPhoto.url({file, material}, :small),
+                          medium: Onsor.MaterialPhoto.url({file, material}, :medium),
+                          large: Onsor.MaterialPhoto.url({file, material}, :large),
+                          default: default
+                        }]
+                        |> Enum.into(material.photos || [])
+                        |> IO.inspect,
+        {:ok, material} <- update_material(material, %{photos: all_photos}) do
+      material
+    else
+      error -> IO.inspect(error)
+    end
+  end
 
   @doc """
   Gets a single material.
@@ -96,6 +115,7 @@ defmodule Onsor.Materials do
   def update_material(%Material{} = material, attrs) do
     material
     |> Material.changeset(attrs)
+    |> IO.inspect()
     |> Repo.update()
   end
 
