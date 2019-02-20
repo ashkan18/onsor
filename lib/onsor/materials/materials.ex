@@ -57,13 +57,27 @@ defmodule Onsor.Materials do
                           large: Onsor.MaterialPhoto.url({file, material}, :large),
                           default: default
                         }]
-                        |> Enum.into(material.photos || [])
-                        |> IO.inspect,
+                        |> Enum.into(material.photos || []),
         {:ok, material} <- update_material(material, %{photos: all_photos}) do
+      Task.async(fn -> analyze_photo(material) end)
       material
     else
       error -> IO.inspect(error)
     end
+  end
+
+  def process_photo(material, original_file) do
+  end
+
+  def analyze_photo(material) do
+    IO.inspect(material)
+    analyze_response = material.photos
+      |> List.first()
+      |> Map.get("medium")
+      |> Onsor.Helper.temp_file_from_url()
+      |> OcvPhotoAnalyzer.analyze([:dominant], %{clusters: 3})
+      |> IO.inspect()
+    update_material(material, %{colors: analyze_response.dominant})
   end
 
   @doc """

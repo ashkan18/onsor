@@ -13,7 +13,7 @@ defmodule Onsor.Materials.Material do
     field :name, :string
     field :size_unit, :string
     field :type, :string
-    field :colors, :map
+    field :colors, {:array, :map}
     field :finish, :string
     field :texture, :string
     field :photos, {:array, :map}

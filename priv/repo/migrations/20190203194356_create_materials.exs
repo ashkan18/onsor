@@ -7,7 +7,7 @@ defmodule Onsor.Repo.Migrations.CreateMaterials do
       add :description, :string
       add :size_unit, :string
       add :type, :string
-      add :colors, :map
+      add :colors, :jsonb, null: false, default: "[]"
       add :texture, :string
       add :finish, :string
       add :compositions, :map
