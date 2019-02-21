@@ -1,12 +1,18 @@
 import axios from 'axios'
 import Material from '../models/material';
 
+interface Color {
+  r: number
+  g: number
+  b: number
+}
 
 interface SearchFilters {
   types?: Array<string>
   textures?: Array<string>
   finishes?: Array<string>
   term?: string
+  color?: Color
 }
 export default class MaterialService {
   // Initializing important variables
@@ -15,14 +21,15 @@ export default class MaterialService {
   }
 
   public searchFilter(args: SearchFilters): Promise<Array<Material>>{
+    console.log(args.color)
     return new Promise((resolve, rejected) =>
       axios({
         url: "/api",
         method: "post",
         data: {
           query: `
-            query materials($types: [String], $textures: [String], $finishes: [String]){
-              materials(types: $types, textures: $textures, finishes: $finishes) {
+            query materials($types: [String], $textures: [String], $finishes: [String], $color: ColorInput){
+              materials(types: $types, textures: $textures, finishes: $finishes, color: $color) {
                 id
                 name
                 description
@@ -36,7 +43,8 @@ export default class MaterialService {
           variables: {
             types: args.types,
             textures: args.textures,
-            finishes: args.finishes
+            finishes: args.finishes,
+            color: args.color
           }
         }
       })

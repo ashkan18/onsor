@@ -14,4 +14,11 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :texture, :string
     field :photos, :json
   end
+
+  input_object :color_input do
+    field :r, non_null(:integer)
+    field :g, non_null(:integer)
+    field :b, non_null(:integer)
+    field :a, non_null(:integer)
+  end
 end

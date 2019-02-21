@@ -34,9 +34,9 @@ defmodule OnsorWeb.Schema do
     field :materials, list_of(:material) do
       arg :types, list_of(:string) # fabric/wood/
       arg :composition, :string # polyester
-      arg :colors, :string
       arg :textures, list_of(:string) # matt/glossy
       arg :finishes, list_of(:string) # texture
+      arg :color, :color_input
       resolve &Resolvers.Material.search_filter/3
     end
 

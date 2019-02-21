@@ -18,10 +18,12 @@ defmodule Onsor.Materials do
 
   """
   def filter_search_materials(args) do
+    IO.inspect(args)
     Material
     |> filter_by_types(args)
     |> filter_by_textures(args)
     |> filter_by_finishes(args)
+    |> filter_by_color(args)
     |> Repo.all
   end
 
@@ -47,6 +49,14 @@ defmodule Onsor.Materials do
   end
   defp filter_by_finishes(query, _), do: query
 
+  defp filter_by_color(query, %{color: nil}), do: query
+  defp filter_by_color(query, %{color: color}) do
+    IO.inspect(color)
+    from material in query,
+    where: fragment("cube(array[cast(colors->0->'r' as numeric), cast(colors->0->'g' as numeric), cast(colors->0->'b' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
+  end
+  defp filter_by_color(query, _), do: query
+
 
   def add_material_photo(material, photo_url, default \\ false) do
     with {:ok, file} <- Onsor.MaterialPhoto.store({photo_url, material}),
@@ -66,11 +76,7 @@ defmodule Onsor.Materials do
     end
   end
 
-  def process_photo(material, original_file) do
-  end
-
   def analyze_photo(material) do
-    IO.inspect(material)
     analyze_response = material.photos
       |> List.first()
       |> Map.get("medium")

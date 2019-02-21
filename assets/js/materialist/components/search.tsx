@@ -2,7 +2,14 @@ import React from "react";
 import Material from "../models/material";
 import MaterialService from "../services/material_service";
 import { Spinner, Flex, BorderBox, Sans, Checkbox, Button } from "@artsy/palette";
+import { CompactPicker } from 'react-color';
 import MaterialWall from "./material_wall";
+
+interface Color {
+  r: number
+  g: number
+  b: number
+}
 
 
 interface State {
@@ -16,6 +23,7 @@ interface State {
   selectedTypes: Set<string>
   selectedTextures: Set<string>
   selectedFinishes: Set<string>
+  selectedColor?: Color
 }
 
 export default class Search extends React.Component<{}, State>{
@@ -24,6 +32,7 @@ export default class Search extends React.Component<{}, State>{
   public constructor(props: {}, context: any) {
     super(props, context)
     this.MaterialService = new MaterialService()
+    this.handleColorPickerChange = this.handleColorPickerChange.bind(this)
     this.state = {
       materials: [],
       types: [],
@@ -34,7 +43,7 @@ export default class Search extends React.Component<{}, State>{
       searchTerm: undefined,
       selectedTypes: new Set(),
       selectedTextures: new Set(),
-      selectedFinishes: new Set()
+      selectedFinishes: new Set(),
     }
   }
   public componentDidMount() {
@@ -56,6 +65,9 @@ export default class Search extends React.Component<{}, State>{
               {finishes.map( t => <Checkbox key={t}> {t} </Checkbox>)}
               <Sans size='3'>Textures</Sans>
               {textures.map( t => <Checkbox key={t}> {t} </Checkbox>)}
+              <CompactPicker
+                color={ this.state.selectedColor }
+                onChangeComplete={ this.handleColorPickerChange }/>
               <Button size="small" onClick={ e => this.searchFilter() }>Search</Button>
             </Flex>
           }
@@ -75,13 +87,22 @@ export default class Search extends React.Component<{}, State>{
     }
   }
 
+  handleColorPickerChange = ({rgb}) => {
+    this.setState({selectedColor: rgb})
+  }
+
   private setTerm(term: string) {
     this.setState({searchTerm: term})
   }
 
   private searchFilter() {
     this.setState({loadingMaterials: true})
-    this.MaterialService.searchFilter({term: this.state.searchTerm, types: Array.from(this.state.selectedTypes.values()), textures: Array.from(this.state.selectedTextures.values()) , finishes: Array.from(this.state.selectedFinishes.values())})
+    this.MaterialService.searchFilter({
+      term: this.state.searchTerm,
+      types: Array.from(this.state.selectedTypes.values()),
+      textures: Array.from(this.state.selectedTextures.values()),
+      finishes: Array.from(this.state.selectedFinishes.values()),
+      color: this.state.selectedColor})
       .then( materials => {
         this.setState({materials, loadingMaterials: false})
       })
