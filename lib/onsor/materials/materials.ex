@@ -53,7 +53,7 @@ defmodule Onsor.Materials do
   defp filter_by_color(query, %{color: color}) do
     IO.inspect(color)
     from material in query,
-    where: fragment("cube(array[cast(colors->0->'r' as numeric), cast(colors->0->'g' as numeric), cast(colors->0->'b' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
+    where: fragment("cube(array[cast(colors->0->'red' as numeric), cast(colors->0->'green' as numeric), cast(colors->0->'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
   end
   defp filter_by_color(query, _), do: query
 
@@ -81,9 +81,12 @@ defmodule Onsor.Materials do
       |> List.first()
       |> Map.get("medium")
       |> Onsor.Helper.temp_file_from_url()
-      |> OcvPhotoAnalyzer.analyze([:dominant], %{clusters: 3})
       |> IO.inspect()
-    update_material(material, %{colors: analyze_response.dominant})
+      |> Mogrify.open()
+      |> Mogrify.histogram()
+      |> Enum.sort(fn a, b -> a["count"] > b["count"] end)
+      |> Enum.take(5)
+    update_material(material, %{colors: analyze_response})
   end
 
   @doc """
