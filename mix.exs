@@ -49,7 +49,7 @@ defmodule Onsor.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe_plug, "~> 1.4"},
       {:poison, "~> 3.1"},
-      {:ocv_photo_analyzer, "~> 1.0.0"}
+      {:mogrify, "~> 0.7.0"}
     ]
   end
 
