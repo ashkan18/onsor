@@ -53,7 +53,10 @@ defmodule Onsor.Materials do
   defp filter_by_color(query, %{color: color}) do
     IO.inspect(color)
     from material in query,
-    where: fragment("cube(array[cast(colors->0->'red' as numeric), cast(colors->0->'green' as numeric), cast(colors->0->'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
+    where: fragment("jsonb_array_length(colors) > 1"),
+    where: fragment("cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b),
+    or_where: fragment("cube(array[cast(colors->1->>'red' as numeric), cast(colors->1->>'green' as numeric), cast(colors->1->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b),
+    or_where: fragment("cube(array[cast(colors->2->>'red' as numeric), cast(colors->2->>'green' as numeric), cast(colors->2->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
   end
   defp filter_by_color(query, _), do: query
 
@@ -69,14 +72,15 @@ defmodule Onsor.Materials do
                         }]
                         |> Enum.into(material.photos || []),
         {:ok, material} <- update_material(material, %{photos: all_photos}) do
-      Task.async(fn -> analyze_photo(material) end)
+      Task.async(fn -> analyze_photo(material.id) end)
       material
     else
       error -> IO.inspect(error)
     end
   end
 
-  def analyze_photo(material) do
+  def analyze_photo(material_id) do
+    material = get_material!(material_id)
     analyze_response = material.photos
       |> List.first()
       |> Map.get("medium")
