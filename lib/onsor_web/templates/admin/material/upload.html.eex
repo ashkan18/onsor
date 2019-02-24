@@ -4,15 +4,10 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
-  <div class="form-group">
-    <label>Photo</label>
-    <%= file_input uf, :photo_url, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <label>Is Default?</label>
-    <%= checkbox uf, :is_default, class: "form-control" %>
-  </div>
+  <%= label uf, :photo %>
+  <%= file_input uf, :photo_url %>
+  <label>Is Default?</label>
+  <%= checkbox uf, :is_default, class: "form-control" %>
 
   <div class="form-group">
     <%= submit "Upload", class: "btn btn-primary" %>

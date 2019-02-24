@@ -7,7 +7,7 @@
       <th>Description</th>
       <th>Unit</th>
       <th>Compositions</th>
-
+      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -18,6 +18,11 @@
       <td><%= material.description %></td>
       <td><%= material.size_unit %></td>
       <td><%= material.compositions %></td>
+      <td>
+        <%= if material.photos do %>
+          <img src=<%= List.first(material.photos)["small"]%> />
+        <%= end %>
+      </td>
 
       <td>
         <%= link "Show", to: Routes.admin_material_path(@conn, :show, material) %>

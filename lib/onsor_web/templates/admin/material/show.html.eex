@@ -1,7 +1,8 @@
 <h1>Show Material</h1>
-
+<%= for photo <- @material.photos do %>
+  <img src=<%= photo["medium"] %>>
+<% end %>
 <ul>
-
   <li>
     <strong>Name:</strong>
     <%= @material.name %>

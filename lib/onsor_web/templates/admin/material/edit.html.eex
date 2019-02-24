@@ -2,6 +2,7 @@
 
 <%= render "form.html", Map.put(assigns, :action, Routes.admin_material_path(@conn, :update, @material)) %>
 
+<h1> Upload Photo </h1>
 <%= render "upload.html", Map.put(assigns, :action, Routes.admin_material_upload_path(@conn, :upload, @material)) %>
 
 <span><%= link "Back", to: Routes.admin_material_path(@conn, :index) %></span>
