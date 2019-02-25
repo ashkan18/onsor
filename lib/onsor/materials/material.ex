@@ -18,6 +18,7 @@ defmodule Onsor.Materials.Material do
     field :texture, :string
     field :photos, {:array, :map}
 
+    many_to_many :vendors, Onsor.Partners.Vendor, join_through: Onsor.VendorMaterial
     timestamps()
   end
 

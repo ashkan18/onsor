@@ -5,6 +5,7 @@ defmodule Onsor.Partners.Vendor do
 
   schema "vendors" do
     field :name, :string
+    many_to_many :materials, Onsor.Materials.Material, join_through: Onsor.VendorMaterial
 
     timestamps()
   end

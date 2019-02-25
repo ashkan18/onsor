@@ -7,6 +7,7 @@ defmodule Onsor.Partners do
   alias Onsor.Repo
 
   alias Onsor.Partners.Vendor
+  alias Onsor.VendorMaterial
 
   @doc """
   Returns the list of vendors.
@@ -18,7 +19,10 @@ defmodule Onsor.Partners do
 
   """
   def list_vendors do
-    Repo.all(Vendor)
+    Vendor
+    |> Repo.all
+    |> Repo.preload(:vendor_materials)
+    |> Repo.preload(:materials)
   end
 
   @doc """
@@ -71,6 +75,12 @@ defmodule Onsor.Partners do
     vendor
     |> Vendor.changeset(attrs)
     |> Repo.update()
+  end
+
+  def add_material(attrs) do
+    %VendorMaterial{}
+    |> VendorMaterial.changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """
