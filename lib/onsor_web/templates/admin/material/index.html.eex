@@ -21,7 +21,7 @@
       <td>
         <%= if material.photos do %>
           <img src=<%= List.first(material.photos)["small"]%> />
-        <%= end %>
+        <% end %>
       </td>
 
       <td>

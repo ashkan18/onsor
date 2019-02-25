@@ -1,11 +1,29 @@
 defmodule OnsorWeb.Schema.PartnerTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
+  import Ecto.Query, warn: false
+
+
+  connection node_type: :material do
+    edge do
+      field :price_cents, :integer
+    end
+  end
 
   @desc "A Vendor"
   object :vendor do
     field :id, :string
     field :name, :string
-    field :materials, list_of(:material)
+    connection field :materials, node_type: :material do
+      resolve fn pagination_args, %{source: vendor} ->
+          Onsor.VendorMaterial
+          |> from
+          |> where([vm], vm.vendor_id == ^vendor.id)
+          |> join(:left, [vm], m in assoc(vm, :material))
+          |> select([vm, m], {m, vm})
+          |> Absinthe.Relay.connection.from_query(&Onsor.Repo.all/1, pagination_args)
+      end
+    end
   end
 
   @desc "A Vendor Material"

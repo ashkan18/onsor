@@ -1,5 +1,6 @@
 defmodule OnsorWeb.Schema do
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
 
   import_types OnsorWeb.Schema.JSON
   import_types OnsorWeb.Schema.PartnerTypes
