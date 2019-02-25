@@ -2,7 +2,7 @@ import React from "react";
 import Material from "../models/material";
 import MaterialService from "../services/material_service";
 import { Spinner, Flex, BorderBox, Sans, Checkbox, Button, Box } from "@artsy/palette";
-import { CompactPicker, CirclePicker, ColorResult } from 'react-color';
+import { ColorResult, CirclePicker } from 'react-color';
 import MaterialWall from "./material_wall";
 import styled from "styled-components";
 import { borderedInput } from "./mixins";
