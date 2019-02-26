@@ -21,7 +21,7 @@ defmodule OnsorWeb.Schema.PartnerTypes do
           |> where([vm], vm.vendor_id == ^vendor.id)
           |> join(:left, [vm], m in assoc(vm, :material))
           |> select([vm, m], {m, vm})
-          |> Absinthe.Relay.connection.from_query(&Onsor.Repo.all/1, pagination_args)
+          |> Absinthe.Relay.Connection.from_query(&Onsor.Repo.all/1, pagination_args)
       end
     end
   end

@@ -21,8 +21,6 @@ defmodule Onsor.Partners do
   def list_vendors do
     Vendor
     |> Repo.all
-    |> Repo.preload(:vendor_materials)
-    |> Repo.preload(:materials)
   end
 
   @doc """
