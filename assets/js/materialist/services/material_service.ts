@@ -37,6 +37,16 @@ export default class MaterialService {
                 finish
                 type
                 photos
+                vendors(first: 100) {
+                  edges {
+                    priceCents
+                    priceCurrency
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
               }
             }
           `,

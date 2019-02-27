@@ -7,6 +7,7 @@ defmodule OnsorWeb.Schema.PartnerTypes do
   connection node_type: :material do
     edge do
       field :price_cents, :integer
+      field :price_currency, :string
     end
   end
 
@@ -20,7 +21,7 @@ defmodule OnsorWeb.Schema.PartnerTypes do
           |> from
           |> where([vm], vm.vendor_id == ^vendor.id)
           |> join(:left, [vm], m in assoc(vm, :material))
-          |> select([vm, m], {m, vm})
+          |> select([vm, m], {m, map(vm, [:price_cents, :price_currency])})
           |> Absinthe.Relay.Connection.from_query(&Onsor.Repo.all/1, pagination_args)
       end
     end

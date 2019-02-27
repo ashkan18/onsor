@@ -1,4 +1,5 @@
 import Photo from "./photo";
+import VendorMaterial from "./vendor_material";
 
 export default interface Material{
   id: string
@@ -9,4 +10,5 @@ export default interface Material{
   type: string
   sizeUnit: string
   photos: Array<Photo>
+  vendors: VendorMaterial
 }

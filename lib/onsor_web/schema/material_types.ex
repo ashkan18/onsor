@@ -1,5 +1,14 @@
 defmodule OnsorWeb.Schema.MaterialTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
+  import Ecto.Query, warn: false
+
+  connection node_type: :vendor do
+    edge do
+      field :price_cents, :integer
+      field :price_currency, :string
+    end
+  end
 
   @desc "A Material"
   object :material do
@@ -13,6 +22,16 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :finish, :string
     field :texture, :string
     field :photos, :json
+    connection field :vendors, node_type: :vendor do
+      resolve fn pagination_args, %{source: material} ->
+          Onsor.VendorMaterial
+          |> from
+          |> where([vm], vm.vendor_id == ^material.id)
+          |> join(:left, [vm], v in assoc(vm, :vendor))
+          |> select([vm, v], {v, map(vm, [:price_cents, :price_currency])})
+          |> Absinthe.Relay.Connection.from_query(&Onsor.Repo.all/1, pagination_args)
+      end
+    end
   end
 
   input_object :color_input do

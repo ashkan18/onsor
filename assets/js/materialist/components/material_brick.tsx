@@ -17,21 +17,25 @@ interface Props {
 }
 
 const MaterialBrick = (props: Props) => {
+  var material = props.material
   return (
     <BorderBox hover flexDirection="column">
       <Serif size="3t" weight="semibold">
-        <Truncator maxLineCount={1}>{props.material.name}</Truncator>
+        <Truncator maxLineCount={1}>{material.name}</Truncator>
       </Serif>
       <Serif size="3t">
-        <Truncator maxLineCount={1}>{props.material.type}</Truncator>
+        <Truncator maxLineCount={1}>{material.type}</Truncator>
       </Serif>
-      {props.material.photos.length > 0 ?
+      <Serif size="2">
+        { material.vendors && material.vendors.edges.length > 0 ? `Offered By: ${material.vendors.edges.map( vm => vm.node.name).join(", ")}` : '' }
+      </Serif>
+      {material.photos.length > 0 ?
         <Box>
-          <Image src={props.material.photos[0]["medium"]} />
+          <Image src={material.photos[0]["medium"]} />
         </Box> : ''
       }
       <Sans size="2" weight="medium">
-        <Truncator maxLineCount={1}>{props.material.texture}</Truncator>
+        <Truncator maxLineCount={1}>{material.texture}</Truncator>
       </Sans>
       <Button size="small" my={1} width={100}>Contact</Button>
     </BorderBox>
