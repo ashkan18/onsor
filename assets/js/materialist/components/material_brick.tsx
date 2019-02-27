@@ -11,28 +11,30 @@ import {
 import React from "react"
 import Material from '../models/material';
 import { Truncator } from "./truncator";
+import { Link } from "react-router-dom";
 
 interface Props {
   material: Material
 }
 
 const MaterialBrick = (props: Props) => {
+  let material = props.material
   return (
     <BorderBox hover flexDirection="column">
       <Serif size="3t" weight="semibold">
-        <Truncator maxLineCount={1}>{props.material.name}</Truncator>
+        <Truncator maxLineCount={1}>{material.name}</Truncator>
       </Serif>
-      <Serif size="3t">
-        <Truncator maxLineCount={1}>{props.material.type}</Truncator>
-      </Serif>
-      {props.material.photos.length > 0 ?
+      <Sans size="2" weight="medium">
+        <Truncator maxLineCount={1}>By: {material.vendor.name}</Truncator>
+      </Sans>
+      {material.photos.length > 0 ?
         <Box>
-          <Image src={props.material.photos[0]["medium"]} />
+          <Image src={material.photos[0]["medium"]} />
         </Box> : ''
       }
-      <Sans size="2" weight="medium">
-        <Truncator maxLineCount={1}>{props.material.texture}</Truncator>
-      </Sans>
+      <Serif size="3t">
+        <Truncator maxLineCount={1}>{material.type}</Truncator>
+      </Serif>
       <Button size="small" my={1} width={100}>Contact</Button>
     </BorderBox>
   )

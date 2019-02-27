@@ -18,10 +18,12 @@ defmodule Onsor.Materials.Material do
     field :texture, :string
     field :photos, {:array, :map}
 
+    belongs_to :vendor, Onsor.Partners.Vendor
+
     timestamps()
   end
 
-  @required_fields ~w(name type size_unit finish texture)a
+  @required_fields ~w(name type size_unit finish texture vendor_id)a
   @optional_fields ~w(description compositions colors photos)a
   @doc false
   def changeset(material, attrs) do

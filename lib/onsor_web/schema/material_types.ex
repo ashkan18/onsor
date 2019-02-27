@@ -13,6 +13,7 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :finish, :string
     field :texture, :string
     field :photos, :json
+    field :vendor, :vendor
   end
 
   input_object :color_input do

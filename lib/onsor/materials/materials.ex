@@ -25,6 +25,7 @@ defmodule Onsor.Materials do
     |> filter_by_finishes(args)
     |> filter_by_color(args)
     |> Repo.all
+    |> Repo.preload(:vendor)
   end
 
   defp filter_by_types(query, %{types: []}), do: query

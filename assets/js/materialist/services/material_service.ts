@@ -37,6 +37,10 @@ export default class MaterialService {
                 finish
                 type
                 photos
+                vendor {
+                  id
+                  name
+                }
               }
             }
           `,

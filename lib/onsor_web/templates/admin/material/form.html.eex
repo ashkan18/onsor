@@ -9,6 +9,10 @@
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
+  <%= label f, :vendor %>
+  <%= select f, :vendor_id, Enum.map(@vendors, fn v -> {v.name, v.id} end) %>
+  <%= error_tag f, :size_unit %>
+
   <%= label f, :type %>
   <%= select f, :type, Onsor.Materials.Material.types %>
   <%= error_tag f, :type %>

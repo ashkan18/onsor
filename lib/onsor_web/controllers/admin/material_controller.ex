@@ -11,7 +11,7 @@ defmodule OnsorWeb.Admin.MaterialController do
 
   def new(conn, _params) do
     changeset = Materials.change_material(%Material{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, vendors: Onsor.Partners.list_vendors())
   end
 
   def create(conn, %{"material" => material_params}) do
