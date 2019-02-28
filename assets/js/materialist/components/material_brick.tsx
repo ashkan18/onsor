@@ -1,7 +1,6 @@
 import {
   BorderBox,
   Box,
-  ResponsiveImage,
   Image,
   Sans,
   Serif,
@@ -22,7 +21,9 @@ const MaterialBrick = (props: Props) => {
   return (
     <BorderBox hover flexDirection="column">
       <Serif size="3t" weight="semibold">
-        <Truncator maxLineCount={1}>{material.name}</Truncator>
+        <Link to={`/materials/${material.id}`}>
+          <Truncator maxLineCount={1}>{material.name}</Truncator>
+        </Link>
       </Serif>
       <Sans size="2" weight="medium">
         <Truncator maxLineCount={1}>By: {material.vendor.name}</Truncator>

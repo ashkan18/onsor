@@ -1,11 +1,17 @@
 import * as React from "react"
-import { Spinner } from "@artsy/palette"
+import { Spinner, Flex } from "@artsy/palette"
 import MaterialService from "../services/material_service"
 import Material from "../models/material"
+import {
+  Image,
+  Sans,
+  Serif,
+  Button,
+} from "@artsy/palette"
 
 
 interface Props {
-  materialId: string
+  match: any
 }
 
 interface State {
@@ -13,7 +19,7 @@ interface State {
   material?: Material
 }
 
-export default class Home extends React.Component<Props, State>{
+export default class MaterialPage extends React.Component<Props, State>{
   MaterialService: MaterialService
 
   public constructor(props: Props, context: any) {
@@ -33,17 +39,17 @@ export default class Home extends React.Component<Props, State>{
       return( <Spinner size="medium"/> )
     } else if(material) {
       return(
-        <>
-          {material.name}
-        </>
+        <Flex flexDirection="row">
+          <h1><Sans size="5">{material.name}</Sans></h1>
+          {material.photos.map( p => <Image src={p["large"]} /> ) }
+        </Flex>
       )
     }
   }
 
   private getMaterial() {
-    this.MaterialService.findMaterial(this.props.materialId)
+    this.MaterialService.findMaterial(this.props.match.params.materialId)
       .then( material => {
-        console.log(material)
         this.setState({material, isLoaded: true})
       })
       .catch( _error => console.log(_error) )
