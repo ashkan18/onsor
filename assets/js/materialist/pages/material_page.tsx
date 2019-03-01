@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Spinner, Flex } from "@artsy/palette"
+import { Spinner, Flex, BorderBox, Box } from "@artsy/palette"
 import MaterialService from "../services/material_service"
 import Material from "../models/material"
 import {
@@ -40,8 +40,12 @@ export default class MaterialPage extends React.Component<Props, State>{
     } else if(material) {
       return(
         <Flex flexDirection="row">
-          <h1><Sans size="5">{material.name}</Sans></h1>
-          {material.photos.map( p => <Image src={p["large"]} /> ) }
+          <Box style={{flexGrow: 7}}>
+            {material.photos.map( p => <Image src={p["large"]} sizes="large" /> ) }
+          </Box>
+          <BorderBox style={{flexGrow: 3}}>
+            <h1><Sans size="5">{material.name}</Sans></h1>
+          </BorderBox>
         </Flex>
       )
     }
