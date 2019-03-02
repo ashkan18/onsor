@@ -12,7 +12,7 @@
       <section class="container">
         <nav role="navigation">
           <ul>
-            <li>Materialist</li>
+            <li><h3>M<span style="font-size: 20px">ateria</span>.L<span style="font-size: 20px">ist</span></h3></li>
           </ul>
         </nav>
       </section>
