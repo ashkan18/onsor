@@ -40,11 +40,18 @@ export default class MaterialPage extends React.Component<Props, State>{
     } else if(material) {
       return(
         <Flex flexDirection="row">
-          <Box style={{flexGrow: 7}}>
+          <Box style={{flexGrow: 5}}>
             {material.photos.map( p => <Image src={p["large"]} sizes="large" /> ) }
           </Box>
           <BorderBox style={{flexGrow: 3}}>
-            <h1><Sans size="5">{material.name}</Sans></h1>
+            <Flex flexDirection="column">
+              <h1><Sans size="5">{material.name}</Sans></h1>
+              <h2><Sans size="5">{material.type}</Sans></h2>
+              <h2><Sans size="5">{material.texture}</Sans></h2>
+              <h2><Sans size="5">{material.finish}</Sans></h2>
+              <Sans size="5">Offerd By: {material.vendor.name}</Sans>
+              <Button size="small" my={1} width={100}>Contact</Button>
+            </Flex>
           </BorderBox>
         </Flex>
       )

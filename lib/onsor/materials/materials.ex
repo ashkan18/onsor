@@ -52,10 +52,9 @@ defmodule Onsor.Materials do
 
   defp filter_by_color(query, %{color: nil}), do: query
   defp filter_by_color(query, %{color: color}) do
-    IO.inspect(color)
     from material in query,
     where: fragment("jsonb_array_length(colors) > 1"),
-    where: fragment("cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b),
+    or_where: fragment("cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b),
     or_where: fragment("cube(array[cast(colors->1->>'red' as numeric), cast(colors->1->>'green' as numeric), cast(colors->1->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b),
     or_where: fragment("cube(array[cast(colors->2->>'red' as numeric), cast(colors->2->>'green' as numeric), cast(colors->2->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
   end

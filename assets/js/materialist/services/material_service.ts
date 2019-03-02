@@ -98,6 +98,13 @@ export default class MaterialService {
                 name
                 description
                 photos
+                texture
+                finish
+                type
+                vendor {
+                  id
+                  name
+                }
               }
             }
           `
