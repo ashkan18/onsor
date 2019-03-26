@@ -1,12 +1,21 @@
 defmodule OnsorWeb.Admin.LoginController do
   use OnsorWeb, :controller
-  alias OnsorWeb.Accounts
+  alias Onsor.{Accounts, Accounts.User}
 
-  def new(conn, _params) do
-    render(conn, "new.html")
+  def index(conn, _params) do
+    changeset = Accounts.change_user(%User{})
+    maybe_user = Guardian.Plug.current_resource(conn)
+    message = if maybe_user != nil do
+      "Someone is logged in"
+    else
+      "No one is logged in"
+    end
+    conn
+      |> put_flash(:info, message)
+      |> render("index.html", changeset: changeset, action: Routes.admin_login_path(conn, :login), maybe_user: maybe_user)
   end
 
-  def create(conn, %{"username" => username, "password" => password}) do
+  def login(conn, %{"username" => username, "password" => password}) do
     case Accounts.authenticate_user(username, password) do
       {:ok, user} ->
         # Use access tokens.
@@ -17,12 +26,12 @@ defmodule OnsorWeb.Admin.LoginController do
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Username or Password didn't match, please try again.")
-        |> render("new.html")
+        |> redirect(to: Routes.admin_login_path(conn, :index))
         # handle not verifying the user's credentials
     end
   end
 
-  def delete(conn, params) do
+  def logout(conn, params) do
     conn
     |> Guardian.Plug.sign_out()
     |> redirect(to: Routes.admin_dashboard_path(conn, :index))

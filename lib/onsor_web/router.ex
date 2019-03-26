@@ -3,13 +3,15 @@ defmodule OnsorWeb.Router do
 
 
   pipeline :maybe_browser_auth do
-    plug(Guardian.Plug.VerifySession)
+    plug Guardian.Plug.Pipeline, module: OnsorWeb.Guardian,
+                               error_handler: OnsorWeb.Admin.AuthErrorHandler
+    plug(Guardian.Plug.VerifySession, claims: %{"typ" => "access"})
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
-    plug(Guardian.Plug.LoadResource)
+    plug(Guardian.Plug.LoadResource, allow_blank: true)
   end
 
   pipeline :ensure_admin_authed_access do
-    plug(Guardian.Plug.EnsureAuthenticated, %{"typ" => "access", handler: OnsorWeb.Admin.AuthErrorHandler})
+    plug(Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"}, error_handler: OnsorWeb.Admin.AuthErrorHandler)
   end
 
   pipeline :browser do
@@ -27,17 +29,14 @@ defmodule OnsorWeb.Router do
       json_decoder: Poison
   end
 
-  scope "/admin/accounts", OnsorWeb, as: :admin do
+  scope "/admin", OnsorWeb, as: :admin do
     pipe_through([:browser, :maybe_browser_auth])
 
-    get("/login", Admin.LoginController, :new)
-    post("/login", Admin.LoginController, :create)
+    get("/login", Admin.LoginController, :index)
+    post("/login", Admin.LoginController, :login)
     post("/logout", Admin.LoginController, :delete)
-  end
 
-  scope "/admin", OnsorWeb, as: :admin do
-    pipe_through([:browser, :ensure_admin_authed_access])
-
+    pipe_through :ensure_admin_authed_access
     resources "/", Admin.DashboardController, only: [:index]
     resources "/vendors", Admin.VendorController
     resources "/materials", Admin.MaterialController do
