@@ -101,4 +101,18 @@ defmodule Onsor.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  def authenticate_user(username, given_password) do
+    User
+    |> Repo.get_by!(username: username)
+    |> check_password(given_password)
+  end
+
+  defp check_password(nil, _), do: {:error, "Incorrect username or password"}
+  defp check_password(user, given_password) do
+    case Bcrypt.checkpw(given_password, user.encrypted_password) do
+      true -> {:ok, user}
+      false -> {:error, "Incorrect username or password"}
+    end
+  end
 end

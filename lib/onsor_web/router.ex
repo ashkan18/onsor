@@ -9,7 +9,7 @@ defmodule OnsorWeb.Router do
   end
 
   pipeline :ensure_admin_authed_access do
-    plug(Guardian.Plug.EnsureAuthenticated, %{"typ" => "access", handler: MyApp.HttpErrorHandler})
+    plug(Guardian.Plug.EnsureAuthenticated, %{"typ" => "access", handler: OnsorWeb.Admin.AuthErrorHandler})
   end
 
   pipeline :browser do
