@@ -7,6 +7,7 @@ defmodule Onsor.Accounts do
   alias Onsor.Repo
 
   alias Onsor.Accounts.User
+  alias Comeonin.Bcrypt
 
   @doc """
   Returns the list of users.

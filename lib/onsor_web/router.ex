@@ -35,6 +35,7 @@ defmodule OnsorWeb.Router do
     get("/login", Admin.LoginController, :index)
     post("/login", Admin.LoginController, :login)
     post("/logout", Admin.LoginController, :delete)
+    resources("/user", Admin.UserController, only: [:create, :new])
 
     pipe_through :ensure_admin_authed_access
     resources "/", Admin.DashboardController, only: [:index]

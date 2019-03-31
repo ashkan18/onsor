@@ -19,7 +19,8 @@ config :onsor, OnsorWeb.Endpoint,
 
 config :onsor, OnsorWeb.Guardian,
   issuer: "onsor",
-  secret_key: {:system, "HMAC_SECRET"}
+  secret_key: System.get_env("HMAC_SECRET"),
+  ttl: { 30, :days }
 
 # Configures Elixir's Logger
 config :logger, :console,
