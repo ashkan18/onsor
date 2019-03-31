@@ -17,6 +17,11 @@ config :onsor, OnsorWeb.Endpoint,
   render_errors: [view: OnsorWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Onsor.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :onsor, OnsorWeb.Guardian,
+  issuer: "onsor",
+  secret_key: System.get_env("HMAC_SECRET"),
+  ttl: { 30, :days }
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

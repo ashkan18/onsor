@@ -1,6 +1,19 @@
 defmodule OnsorWeb.Router do
   use OnsorWeb, :router
 
+
+  pipeline :maybe_browser_auth do
+    plug Guardian.Plug.Pipeline, module: OnsorWeb.Guardian,
+                               error_handler: OnsorWeb.Admin.AuthErrorHandler
+    plug(Guardian.Plug.VerifySession, claims: %{"typ" => "access"})
+    plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
+    plug(Guardian.Plug.LoadResource, allow_blank: true)
+  end
+
+  pipeline :ensure_admin_authed_access do
+    plug(Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"}, error_handler: OnsorWeb.Admin.AuthErrorHandler)
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -17,9 +30,15 @@ defmodule OnsorWeb.Router do
   end
 
   scope "/admin", OnsorWeb, as: :admin do
-    pipe_through :browser
+    pipe_through([:browser, :maybe_browser_auth])
 
-    get "/", Admin.DashboardController, :index
+    get("/login", Admin.LoginController, :index)
+    post("/login", Admin.LoginController, :login)
+    post("/logout", Admin.LoginController, :delete)
+    resources("/user", Admin.UserController, only: [:create, :new])
+
+    pipe_through :ensure_admin_authed_access
+    resources "/", Admin.DashboardController, only: [:index]
     resources "/vendors", Admin.VendorController
     resources "/materials", Admin.MaterialController do
       put "/upload",  Admin.MaterialController, :upload, as: :upload
