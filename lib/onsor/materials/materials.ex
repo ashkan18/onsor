@@ -17,49 +17,27 @@ defmodule Onsor.Materials do
       [%Material{}, ...]
 
   """
-  def filter_search_materials(args) do
-    IO.inspect(args)
+  def filter_search_materials(criteria \\ []) do
+    IO.inspect(criteria)
     Material
-    |> filter_by_types(args)
-    |> filter_by_textures(args)
-    |> filter_by_finishes(args)
-    |> filter_by_color(args)
+    |> filter_query(criteria)
     |> Repo.all
     |> Repo.preload(:vendor)
   end
 
-  defp filter_by_types(query, %{types: []}), do: query
-  defp filter_by_types(query, %{types: types}) do
-    from material in query,
-    where: material.type in ^types
+  def filter_query(query, criteria), do: Enum.reduce(criteria, query, &material_query/2)
+
+  defp material_query({key, value}, query) when key in ~w(type texture finish)a do
+    from e in query,
+      where: field(e, ^key) in ^value
   end
-  defp filter_by_types(query, _), do: query
-
-
-  defp filter_by_textures(query, %{textures: []}), do: query
-  defp filter_by_textures(query, %{textures: textures}) do
-    from material in query,
-    where: material.type in ^textures
-  end
-  defp filter_by_textures(query, _), do: query
-
-  defp filter_by_finishes(query, %{finishes: []}), do: query
-  defp filter_by_finishes(query, %{finishes: finishes}) do
-    from material in query,
-    where: material.type in ^finishes
-  end
-  defp filter_by_finishes(query, _), do: query
-
-  defp filter_by_color(query, %{color: nil}), do: query
-  defp filter_by_color(query, %{color: color}) do
+  defp material_query({:color, color}, query) do
     from material in query,
     where: fragment("jsonb_array_length(colors) > 1"),
     where: fragment("cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
             or fragment("cube(array[cast(colors->1->>'red' as numeric), cast(colors->1->>'green' as numeric), cast(colors->1->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
             or fragment("cube(array[cast(colors->2->>'red' as numeric), cast(colors->2->>'green' as numeric), cast(colors->2->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
   end
-  defp filter_by_color(query, _), do: query
-
 
   def add_material_photo(material, photo_url, default \\ false) do
     with {:ok, file} <- Onsor.MaterialPhoto.store({photo_url, material}),

@@ -8,9 +8,9 @@ interface Color {
 }
 
 interface SearchFilters {
-  types?: Array<string>
-  textures?: Array<string>
-  finishes?: Array<string>
+  type?: Array<string>
+  texture?: Array<string>
+  finish?: Array<string>
   term?: string
   color?: Color
 }
@@ -28,8 +28,8 @@ export default class MaterialService {
         method: "post",
         data: {
           query: `
-            query materials($types: [String], $textures: [String], $finishes: [String], $color: ColorInput){
-              materials(types: $types, textures: $textures, finishes: $finishes, color: $color) {
+            query materials($type: [String], $texture: [String], $finish: [String], $color: ColorInput){
+              materials(type: $type, texture: $texture, finish: $finish, color: $color) {
                 id
                 name
                 description
@@ -45,9 +45,9 @@ export default class MaterialService {
             }
           `,
           variables: {
-            types: args.types,
-            textures: args.textures,
-            finishes: args.finishes,
+            type: args.type,
+            texture: args.texture,
+            finish: args.finish,
             color: args.color
           }
         }

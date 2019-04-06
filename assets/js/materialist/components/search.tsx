@@ -136,9 +136,9 @@ export default class Search extends React.Component<{}, State>{
     this.setState({loadingMaterials: true})
     this.MaterialService.searchFilter({
       term: this.state.searchTerm,
-      types: Array.from(this.state.selectedTypes.values()),
-      textures: Array.from(this.state.selectedTextures.values()),
-      finishes: Array.from(this.state.selectedFinishes.values()),
+      type: Array.from(this.state.selectedTypes.values()),
+      texture: Array.from(this.state.selectedTextures.values()),
+      finish: Array.from(this.state.selectedFinishes.values()),
       color: this.state.selectedColor ? this.state.selectedColor.rgb : undefined})
       .then( materials => {
         this.setState({materials, loadingMaterials: false})
