@@ -34,15 +34,15 @@ defmodule OnsorWeb.Router do
 
     get("/login", Admin.LoginController, :index)
     post("/login", Admin.LoginController, :login)
-    post("/logout", Admin.LoginController, :delete)
+    get("/logout", Admin.LoginController, :logout)
     resources("/user", Admin.UserController, only: [:create, :new])
 
     pipe_through :ensure_admin_authed_access
-    resources "/", Admin.DashboardController, only: [:index]
     resources "/vendors", Admin.VendorController
     resources "/materials", Admin.MaterialController do
       put "/upload",  Admin.MaterialController, :upload, as: :upload
     end
+    resources "/*path", Admin.DashboardController, only: [:index]
   end
 
   # Other scopes may use custom stacks.

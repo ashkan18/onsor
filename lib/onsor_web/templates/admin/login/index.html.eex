@@ -14,6 +14,7 @@
     <div class="form-group">
       <%= submit "Submit", class: "btn btn-primary" %>
     </div>
+    <span>Dont have an account? <%= link "Signup", to: Routes.admin_user_path(@conn, :new) %></span>
   <% end %>
 <% else %>
   <h1>Hello <%= @maybe_user.username%>!</h1>
