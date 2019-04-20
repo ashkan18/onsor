@@ -6,8 +6,16 @@ defmodule Onsor.AccountsTest do
   describe "users" do
     alias Onsor.Accounts.User
 
-    @valid_attrs %{encrypted_password: "some encrypted_password", name: "some name", username: "some username"}
-    @update_attrs %{encrypted_password: "some updated encrypted_password", name: "some updated name", username: "some updated username"}
+    @valid_attrs %{
+      encrypted_password: "some encrypted_password",
+      name: "some name",
+      username: "some username"
+    }
+    @update_attrs %{
+      encrypted_password: "some updated encrypted_password",
+      name: "some updated name",
+      username: "some updated username"
+    }
     @invalid_attrs %{encrypted_password: nil, name: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do

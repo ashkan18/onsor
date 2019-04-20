@@ -3,7 +3,6 @@ defmodule Onsor.Accounts.User do
   import Ecto.Changeset
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
-
   schema "users" do
     field :encrypted_password, :string
     field :name, :string
@@ -21,17 +20,24 @@ defmodule Onsor.Accounts.User do
     user
     |> cast(attrs, [:username, :name, :password, :password_confirmation])
     |> validate_required([:username, :name, :password, :password_confirmation])
-    |> validate_format(:username, ~r/@/) # Check that email is valid
-    |> validate_length(:password, min: 8) # Check that password length is >= 8
-    |> validate_confirmation(:password) # Check that password === password_confirmation
+    # Check that email is valid
+    |> validate_format(:username, ~r/@/)
+    # Check that password length is >= 8
+    |> validate_length(:password, min: 8)
+    # Check that password === password_confirmation
+    |> validate_confirmation(:password)
     |> unique_constraint(:username)
-    |> put_password_hash # Add put_password_hash to changeset pipeline
+    # Add put_password_hash to changeset pipeline
+    |> put_password_hash
   end
 
   defp put_password_hash(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: pass}} -> put_change(changeset, :encrypted_password, hashpwsalt(pass))
-      _ -> changeset
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :encrypted_password, hashpwsalt(pass))
+
+      _ ->
+        changeset
     end
   end
 end

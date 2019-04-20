@@ -1,17 +1,21 @@
 defmodule OnsorWeb.Router do
   use OnsorWeb, :router
 
-
   pipeline :maybe_browser_auth do
-    plug Guardian.Plug.Pipeline, module: OnsorWeb.Guardian,
-                               error_handler: OnsorWeb.Admin.AuthErrorHandler
+    plug Guardian.Plug.Pipeline,
+      module: OnsorWeb.Guardian,
+      error_handler: OnsorWeb.Admin.AuthErrorHandler
+
     plug(Guardian.Plug.VerifySession, claims: %{"typ" => "access"})
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
     plug(Guardian.Plug.LoadResource, allow_blank: true)
   end
 
   pipeline :ensure_admin_authed_access do
-    plug(Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"}, error_handler: OnsorWeb.Admin.AuthErrorHandler)
+    plug(Guardian.Plug.EnsureAuthenticated,
+      claims: %{"typ" => "access"},
+      error_handler: OnsorWeb.Admin.AuthErrorHandler
+    )
   end
 
   pipeline :browser do
@@ -39,9 +43,11 @@ defmodule OnsorWeb.Router do
 
     pipe_through :ensure_admin_authed_access
     resources "/vendors", Admin.VendorController
+
     resources "/materials", Admin.MaterialController do
-      put "/upload",  Admin.MaterialController, :upload, as: :upload
+      put "/upload", Admin.MaterialController, :upload, as: :upload
     end
+
     resources "/*path", Admin.DashboardController, only: [:index]
   end
 

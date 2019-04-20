@@ -14,6 +14,5 @@ defmodule Onsor.Repo.Migrations.CreateMaterials do
 
       timestamps()
     end
-
   end
 end

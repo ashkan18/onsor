@@ -19,9 +19,10 @@ defmodule Onsor.Materials do
   """
   def filter_search_materials(criteria \\ []) do
     IO.inspect(criteria)
+
     Material
     |> filter_query(criteria)
-    |> Repo.all
+    |> Repo.all()
     |> Repo.preload(:vendor)
   end
 
@@ -31,25 +32,45 @@ defmodule Onsor.Materials do
     from e in query,
       where: field(e, ^key) in ^value
   end
+
   defp material_query({:color, color}, query) do
     from material in query,
-    where: fragment("jsonb_array_length(colors) > 1"),
-    where: fragment("cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
-            or fragment("cube(array[cast(colors->1->>'red' as numeric), cast(colors->1->>'green' as numeric), cast(colors->1->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
-            or fragment("cube(array[cast(colors->2->>'red' as numeric), cast(colors->2->>'green' as numeric), cast(colors->2->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140", ^color.r, ^color.g, ^color.b)
+      where: fragment("jsonb_array_length(colors) > 1"),
+      where:
+        fragment(
+          "cube(array[cast(colors->0->>'red' as numeric), cast(colors->0->>'green' as numeric), cast(colors->0->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140",
+          ^color.r,
+          ^color.g,
+          ^color.b
+        ) or
+          fragment(
+            "cube(array[cast(colors->1->>'red' as numeric), cast(colors->1->>'green' as numeric), cast(colors->1->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140",
+            ^color.r,
+            ^color.g,
+            ^color.b
+          ) or
+          fragment(
+            "cube(array[cast(colors->2->>'red' as numeric), cast(colors->2->>'green' as numeric), cast(colors->2->>'blue' as numeric)]) <-> cube(array[?::numeric, ?::numeric, ?::numeric]) < 140",
+            ^color.r,
+            ^color.g,
+            ^color.b
+          )
   end
 
   def add_material_photo(material, photo_url, default \\ false) do
     with {:ok, file} <- Onsor.MaterialPhoto.store({photo_url, material}),
-          all_photos <-  [%{
-                          original: Onsor.MaterialPhoto.url({file, material}, :original),
-                          small: Onsor.MaterialPhoto.url({file, material}, :small),
-                          medium: Onsor.MaterialPhoto.url({file, material}, :medium),
-                          large: Onsor.MaterialPhoto.url({file, material}, :large),
-                          default: default
-                        }]
-                        |> Enum.into(material.photos || []),
-        {:ok, material} <- update_material(material, %{photos: all_photos}) do
+         all_photos <-
+           [
+             %{
+               original: Onsor.MaterialPhoto.url({file, material}, :original),
+               small: Onsor.MaterialPhoto.url({file, material}, :small),
+               medium: Onsor.MaterialPhoto.url({file, material}, :medium),
+               large: Onsor.MaterialPhoto.url({file, material}, :large),
+               default: default
+             }
+           ]
+           |> Enum.into(material.photos || []),
+         {:ok, material} <- update_material(material, %{photos: all_photos}) do
       Task.async(fn -> analyze_photo(material.id) end)
       material
     else
@@ -59,7 +80,9 @@ defmodule Onsor.Materials do
 
   def analyze_photo(material_id) do
     material = get_material!(material_id)
-    analyze_response = material.photos
+
+    analyze_response =
+      material.photos
       |> List.first()
       |> Map.get("medium")
       |> Onsor.Helper.temp_file_from_url()
@@ -68,6 +91,7 @@ defmodule Onsor.Materials do
       |> Mogrify.histogram()
       |> Enum.sort(fn a, b -> a["count"] > b["count"] end)
       |> Enum.take(5)
+
     update_material(material, %{colors: analyze_response})
   end
 

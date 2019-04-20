@@ -2,7 +2,6 @@ defmodule Onsor.Partners.Vendor do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "vendors" do
     field :name, :string
 

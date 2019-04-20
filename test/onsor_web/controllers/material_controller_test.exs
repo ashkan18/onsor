@@ -3,8 +3,18 @@ defmodule OnsorWeb.MaterialControllerTest do
 
   alias Onsor.Materials
 
-  @create_attrs %{compositions: %{}, description: "some description", name: "some name", unit: "some unit"}
-  @update_attrs %{compositions: %{}, description: "some updated description", name: "some updated name", unit: "some updated unit"}
+  @create_attrs %{
+    compositions: %{},
+    description: "some description",
+    name: "some name",
+    unit: "some unit"
+  }
+  @update_attrs %{
+    compositions: %{},
+    description: "some updated description",
+    name: "some updated name",
+    unit: "some updated unit"
+  }
   @invalid_attrs %{compositions: nil, description: nil, name: nil, unit: nil}
 
   def fixture(:material) do
@@ -56,7 +66,9 @@ defmodule OnsorWeb.MaterialControllerTest do
     setup [:create_material]
 
     test "redirects when data is valid", %{conn: conn, material: material} do
-      conn = put(conn, Routes.admin_material_path(conn, :update, material), material: @update_attrs)
+      conn =
+        put(conn, Routes.admin_material_path(conn, :update, material), material: @update_attrs)
+
       assert redirected_to(conn) == Routes.admin_material_path(conn, :show, material)
 
       conn = get(conn, Routes.admin_material_path(conn, :show, material))
@@ -64,7 +76,9 @@ defmodule OnsorWeb.MaterialControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, material: material} do
-      conn = put(conn, Routes.admin_material_path(conn, :update, material), material: @invalid_attrs)
+      conn =
+        put(conn, Routes.admin_material_path(conn, :update, material), material: @invalid_attrs)
+
       assert html_response(conn, 200) =~ "Edit Material"
     end
   end
@@ -75,6 +89,7 @@ defmodule OnsorWeb.MaterialControllerTest do
     test "deletes chosen material", %{conn: conn, material: material} do
       conn = delete(conn, Routes.admin_material_path(conn, :delete, material))
       assert redirected_to(conn) == Routes.admin_material_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.admin_material_path(conn, :show, material))
       end

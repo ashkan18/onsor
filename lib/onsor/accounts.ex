@@ -110,6 +110,7 @@ defmodule Onsor.Accounts do
   end
 
   defp check_password(nil, _), do: {:error, "Incorrect username or password"}
+
   defp check_password(user, given_password) do
     case Bcrypt.checkpw(given_password, user.encrypted_password) do
       true -> {:ok, user}

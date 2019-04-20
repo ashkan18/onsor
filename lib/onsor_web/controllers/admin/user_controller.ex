@@ -5,6 +5,7 @@ defmodule OnsorWeb.Admin.UserController do
 
   def new(conn, _params) do
     changeset = Accounts.change_user(%User{})
+
     if Guardian.Plug.current_resource(conn) != nil do
       conn
       |> redirect(to: Routes.admin_dashboard_path(conn, :index))

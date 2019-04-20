@@ -7,6 +7,5 @@ defmodule Onsor.Repo.Migrations.CreateVendors do
 
       timestamps()
     end
-
   end
 end

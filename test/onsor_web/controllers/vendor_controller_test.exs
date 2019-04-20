@@ -75,6 +75,7 @@ defmodule OnsorWeb.VendorControllerTest do
     test "deletes chosen vendor", %{conn: conn, vendor: vendor} do
       conn = delete(conn, Routes.admin_vendor_path(conn, :delete, vendor))
       assert redirected_to(conn) == Routes.admin_vendor_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.admin_vendor_path(conn, :show, vendor))
       end

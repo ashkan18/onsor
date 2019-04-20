@@ -6,17 +6,24 @@ defmodule OnsorWeb.Admin.LoginController do
   def index(conn, _params) do
     changeset = Accounts.change_user(%User{})
     maybe_user = Guardian.Plug.current_resource(conn)
-    message = if maybe_user != nil do
-      "Someone is logged in"
-    else
-      "No one is logged in"
-    end
+
+    message =
+      if maybe_user != nil do
+        "Someone is logged in"
+      else
+        "No one is logged in"
+      end
+
     conn
-      |> put_flash(:info, message)
-      |> render("index.html", changeset: changeset, action: Routes.admin_login_path(conn, :login), maybe_user: maybe_user)
+    |> put_flash(:info, message)
+    |> render("index.html",
+      changeset: changeset,
+      action: Routes.admin_login_path(conn, :login),
+      maybe_user: maybe_user
+    )
   end
 
-  def login(conn, %{ "user" => %{"username" => username, "password" => password}}) do
+  def login(conn, %{"user" => %{"username" => username, "password" => password}}) do
     case Accounts.authenticate_user(username, password) do
       {:ok, user} ->
         # Use access tokens.

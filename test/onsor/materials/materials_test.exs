@@ -6,8 +6,18 @@ defmodule Onsor.MaterialsTest do
   describe "materials" do
     alias Onsor.Materials.Material
 
-    @valid_attrs %{compositions: %{}, description: "some description", name: "some name", unit: "some unit"}
-    @update_attrs %{compositions: %{}, description: "some updated description", name: "some updated name", unit: "some updated unit"}
+    @valid_attrs %{
+      compositions: %{},
+      description: "some description",
+      name: "some name",
+      unit: "some unit"
+    }
+    @update_attrs %{
+      compositions: %{},
+      description: "some updated description",
+      name: "some updated name",
+      unit: "some updated unit"
+    }
     @invalid_attrs %{compositions: nil, description: nil, name: nil, unit: nil}
 
     def material_fixture(attrs \\ %{}) do
