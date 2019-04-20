@@ -29,11 +29,6 @@ interface State {
   selectedColor: ColorResult | null
 }
 
-const StyledButton = styled(Button)`
-  margin-top: 10px;
-  font-weight: bold;
-`;
-
 export default class Search extends React.Component<{}, State>{
   MaterialService: MaterialService
 

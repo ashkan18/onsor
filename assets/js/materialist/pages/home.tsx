@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Flex } from "@artsy/palette"
 import Search from "../components/search";
+import Header from "../components/header";
 
 export default class Home extends React.Component<{}, {}>{
   public constructor(props: {}, context: any) {
@@ -9,9 +10,12 @@ export default class Home extends React.Component<{}, {}>{
 
   public render(){
     return(
-      <Flex flexDirection="row">
-        <Search/>
-      </Flex>
+      <>
+        <Header/>
+        <Flex flexDirection="row">
+          <Search/>
+        </Flex>
+      </>
     )
   }
 }

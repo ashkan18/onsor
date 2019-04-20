@@ -23,13 +23,14 @@ import { Route, Switch } from "react-router";
 import { BrowserRouter as Router} from "react-router-dom"
 import Home from "./materialist/pages/home";
 import MaterialPage from "./materialist/pages/material_page";
+import Header from "./materialist/components/header";
 
 const GlobalStyles = injectGlobalStyles()
 
 class App extends React.Component {
   render() {
     return (
-      <Theme>
+      <Theme style={{width: "100%"}}>
         <Router>
           <Switch>
             <Route path="/materials/:materialId" component={MaterialPage}/>

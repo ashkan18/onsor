@@ -19,25 +19,25 @@ interface Props {
 const MaterialBrick = (props: Props) => {
   let material = props.material
   return (
-    <BorderBox hover flexDirection="column">
-      <Serif size="3t" weight="semibold">
-        <Link to={`/materials/${material.id}`}>
+    <Link to={`/materials/${material.id}`}>
+      <BorderBox hover flexDirection="column">
+        <Serif size="3t" weight="semibold">
           <Truncator maxLineCount={1}>{material.name}</Truncator>
-        </Link>
-      </Serif>
-      <Sans size="2" weight="medium">
-        <Truncator maxLineCount={1}>By: {material.vendor.name}</Truncator>
-      </Sans>
-      {material.photos.length > 0 ?
-        <Box>
-          <Image src={material.photos[0]["medium"]} />
-        </Box> : ''
-      }
-      <Serif size="3t">
-        <Truncator maxLineCount={1}>{material.type}</Truncator>
-      </Serif>
-      <Button size="small" my={1} width={100}>Contact</Button>
-    </BorderBox>
+        </Serif>
+        <Sans size="2" weight="medium">
+          <Truncator maxLineCount={1}>By: {material.vendor.name}</Truncator>
+        </Sans>
+        {material.photos.length > 0 ?
+          <Box style={{marginTop: 10}}>
+            <Image src={material.photos[0]["medium"]} />
+          </Box> : ''
+        }
+        <Serif size="3t">
+          <Truncator maxLineCount={1}>{material.type}</Truncator>
+        </Serif>
+        <Button size="small" my={1} width={100}>Contact</Button>
+      </BorderBox>
+    </Link>
   )
 }
 
