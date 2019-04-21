@@ -4,6 +4,7 @@ defmodule OnsorWeb.Schema do
   import_types(OnsorWeb.Schema.JSON)
   import_types(OnsorWeb.Schema.PartnerTypes)
   import_types(OnsorWeb.Schema.MaterialTypes)
+  import_types(OnsorWeb.Schema.AccountTypes)
 
   alias OnsorWeb.Resolvers
 
@@ -46,6 +47,26 @@ defmodule OnsorWeb.Schema do
     field :material, :material do
       arg(:id, non_null(:id))
       resolve(&Resolvers.Material.find_material/3)
+    end
+  end
+
+  mutation do
+    @desc "SignUp for an account"
+    field :create_user, type: :session do
+      arg(:name, non_null(:string))
+      arg(:username, non_null(:string))
+      arg(:password, non_null(:string))
+      arg(:password_confirmation, non_null(:string))
+
+      resolve(&Resolvers.UserResolver.create/2)
+    end
+
+    @desc "Login"
+    field :login, type: :session do
+      arg(:username, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&Resolvers.UserResolver.login/2)
     end
   end
 end

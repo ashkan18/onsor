@@ -26,6 +26,10 @@ defmodule OnsorWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :graphql do
+    plug AprWeb.GraphQLContextPlug
+  end
+
   pipeline :api do
     plug Plug.Parsers,
       parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
@@ -53,7 +57,7 @@ defmodule OnsorWeb.Router do
 
   # Other scopes may use custom stacks.
   scope "/api" do
-    pipe_through :api
+    pipe_through [:api, :graphql]
 
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: OnsorWeb.Schema
     forward "/", Absinthe.Plug, schema: OnsorWeb.Schema
