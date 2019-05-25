@@ -6,6 +6,13 @@ defmodule OnsorWeb.Resolvers.UserResolver do
     with {:ok, %User{} = user} <- Accounts.create_user(params),
          {:ok, jwt, _} <- Guardian.encode_and_sign(user) do
       {:ok, %{token: jwt}}
+    else
+      {:error, %Ecto.Changeset{errors: errors}} ->
+        {:error,
+          errors
+          |> Keyword.keys
+          |> Enum.map(fn k -> %{message: "Invalid #{k}"} end)
+        }
     end
   end
 

@@ -6,12 +6,32 @@ export default class AuthService {
     this.login = this.login.bind(this)
   }
 
-  public login(username: string, pass: string): Promise<string>{
+  public login(username: string, password: string): Promise<string>{
     return new Promise((resolve, rejected) =>
-      axios.post("/api/login", { user: { username: username, password: pass } })
+      axios({
+        url: "/api",
+        method: "post",
+        data: {
+          query: `
+            mutation login($username: String!, $password: String!){
+              login(username: $username, password: $password){
+                token
+              }
+            }
+          `,
+          variables: {
+            username,
+            password
+          }
+        }
+      })
       .then( response => {
+        console.log(response.data.errors)
+        if(response.data.errors) {
+          return rejected(response.data.errors[0].message)
+        }
         this.setToken(response.data.data.token)
-        return resolve(response.data.data.token)
+        return resolve(response.data.data.materials)
       })
       .catch( error => {
         return rejected(error)
@@ -19,13 +39,42 @@ export default class AuthService {
     )
   }
 
-  public me(): Promise<User> {
+  public signup(username: string, password: string, passwordConfirmation: string, name: string): Promise<string>{
     return new Promise((resolve, rejected) =>
-      axios.get("/api/me", { headers: { 'Authorization': `Bearer ${this.getToken()}` }})
-      .then( response => resolve(response.data))
-      .catch( error => rejected(error)
-      )
+      axios({
+        url: "/api",
+        method: "post",
+        data: {
+          query: `
+            mutation createUser($username: String!, $password: String!, $passwordConfirmation: String!, $name: String!){
+              createUser(username: $username, password: $password, passwordConfirmation: $passwordConfirmation, name: $name){
+                token
+              }
+            }
+          `,
+          variables: {
+            username,
+            password,
+            passwordConfirmation,
+            name
+          }
+        }
+      })
+      .then( response => {
+        if(response.data.errors) {
+          return rejected(response.data.errors[0].message)
+        }
+        this.setToken(response.data.data.token)
+        return resolve(response.data.data.materials)
+      })
+      .catch( error => {
+        return rejected(error)
+      })
     )
+  }
+
+  public me(){
+    return null
   }
 
   setToken = (idToken: string) => {
