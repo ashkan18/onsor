@@ -21,7 +21,6 @@ export default class MaterialService {
   }
 
   public searchFilter(args: SearchFilters): Promise<Array<Material>>{
-    console.log(args.color)
     return new Promise((resolve, rejected) =>
       axios({
         url: "/api",
@@ -77,7 +76,6 @@ export default class MaterialService {
         }
       })
       .then( response => {
-        console.log(response)
         return resolve(response.data.data)
       })
       .catch( error => {

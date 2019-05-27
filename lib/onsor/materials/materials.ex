@@ -29,6 +29,7 @@ defmodule Onsor.Materials do
   def filter_query(query, criteria), do: Enum.reduce(criteria, query, &material_query/2)
 
   defp material_query({key, []}, query) when key in ~w(type texture finish)a, do: query
+
   defp material_query({key, value}, query) when key in ~w(type texture finish)a do
     from e in query,
       where: field(e, ^key) in ^value

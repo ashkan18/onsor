@@ -1,8 +1,8 @@
-import { Flex, Spinner, Button } from '@artsy/palette'
+import { Flex, Button } from '@artsy/palette'
 import React from "react"
-import { Link } from "react-router-dom";
 import User from '../models/user';
 import AuthService from '../services/auth_service'
+import { Link } from 'react-router-dom';
 
 interface State {
   user: User | null
@@ -22,11 +22,18 @@ export default class MyAccount extends React.Component<{}, State>{
   public render(){
     const { user, isLoggedIn } = this.state
     return (
-      <>
-        {isLoggedIn && user && <div> Logout </div>}
-        {isLoggedIn && <Spinner/>}
-        {!isLoggedIn && <Button>Login</Button>}
-      </>
+      <div>
+        {isLoggedIn && user && <Button size="small" onClick={this.logout}> Logout </Button>}
+        {!isLoggedIn &&
+          <Flex flexDirection="row" justifyContent="space-between" width={150} mt={1}>
+            <Link to={'/login'}>
+              <Button size="small">Login</Button>
+            </Link>
+            <Link to={'/signup'}>
+              <Button size="small">SignUp</Button>
+            </Link>
+          </Flex>}
+      </div>
     )
   }
 
@@ -34,5 +41,10 @@ export default class MyAccount extends React.Component<{}, State>{
     this.authService.me()
       .then(user => this.setState({user}))
       .catch(_error => this.setState({isLoggedIn: false, user: null}))
+  }
+
+  private logout(){
+    this.authService.logout()
+    this.setState({isLoggedIn: false, user: null})
   }
 }

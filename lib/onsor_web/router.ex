@@ -26,11 +26,20 @@ defmodule OnsorWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :graphql do
+    plug OnsorWeb.GraphQLContextPlug
+  end
+
   pipeline :api do
     plug Plug.Parsers,
       parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
       pass: ["*/*"],
       json_decoder: Poison
+    plug Guardian.Plug.Pipeline,
+      module: OnsorWeb.Guardian,
+      error_handler: OnsorWeb.AuthErrorHandler
+    plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
+    plug(Guardian.Plug.LoadResource, allow_blank: true)
   end
 
   scope "/admin", OnsorWeb, as: :admin do
@@ -53,7 +62,7 @@ defmodule OnsorWeb.Router do
 
   # Other scopes may use custom stacks.
   scope "/api" do
-    pipe_through :api
+    pipe_through [:api, :graphql]
 
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: OnsorWeb.Schema
     forward "/", Absinthe.Plug, schema: OnsorWeb.Schema

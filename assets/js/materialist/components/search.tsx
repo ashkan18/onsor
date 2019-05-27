@@ -75,7 +75,7 @@ export default class Search extends React.Component<{}, State>{
                   color={ this.state.selectedColor ? this.state.selectedColor.rgb : undefined }
                   onChangeComplete={ this.handleColorPickerChange }/>
               </Box>
-              <Button size="small" onClick={ e => this.searchFilter() } style={ {marginTop: 20} }>Search</Button>
+              <Button size="small" onClick={ _e => this.searchFilter() } mt={3}>Search</Button>
             </Flex>
           }
         </BorderBox>
@@ -115,7 +115,6 @@ export default class Search extends React.Component<{}, State>{
   }
 
   handleColorPickerChange = (color: ColorResult) => {
-    console.log(this.state.selectedColor, color)
     if (this.state.selectedColor === color) {
       this.setState({selectedColor: null})
     } else {
