@@ -1,4 +1,4 @@
-import { Flex, Spinner, Button } from '@artsy/palette'
+import { Flex, Button } from '@artsy/palette'
 import React from "react"
 import User from '../models/user';
 import AuthService from '../services/auth_service'
@@ -23,8 +23,7 @@ export default class MyAccount extends React.Component<{}, State>{
     const { user, isLoggedIn } = this.state
     return (
       <div>
-        {isLoggedIn && user && <div> Logout </div>}
-        {/* {isLoggedIn && <Spinner/>} */}
+        {isLoggedIn && user && <Button size="small" onClick={this.logout}> Logout </Button>}
         {!isLoggedIn &&
           <Flex flexDirection="row" justifyContent="space-between" width={150} mt={1}>
             <Link to={'/login'}>
@@ -42,5 +41,10 @@ export default class MyAccount extends React.Component<{}, State>{
     this.authService.me()
       .then(user => this.setState({user}))
       .catch(_error => this.setState({isLoggedIn: false, user: null}))
+  }
+
+  private logout(){
+    this.authService.logout()
+    this.setState({isLoggedIn: false, user: null})
   }
 }

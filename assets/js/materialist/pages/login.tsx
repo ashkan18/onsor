@@ -1,5 +1,6 @@
 import * as React from "react"
-import { Flex, Button } from "@artsy/palette"
+import { Flex, Button, Separator } from "@artsy/palette"
+import { Link } from 'react-router-dom';
 import AuthService from "../services/auth_service";
 import styled from "styled-components";
 import { borderedInput } from "../components/mixins";
@@ -32,6 +33,8 @@ export default class Login extends React.Component<{}, State>{
           <StyledInput type="password" onChange={e => this.setPassword(e.target.value)} placeholder="Password" value={this.state.password}/>
         </Flex>
         <Button size="large" onClick={ _e => this.login() } mt={3}>Login</Button>
+        <Separator/>
+        Don't have an account? click <Link to={'/signup'}>here</Link>
       </>
     )
   }

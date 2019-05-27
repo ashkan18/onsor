@@ -22,7 +22,5 @@ defmodule OnsorWeb.Resolvers.UserResolver do
     end
   end
 
-  def current_user(_parent, _args, %{context: %{current_user: current_user}}) do
-    {:ok, current_user}
-  end
+  def current_user(_parent, _args, %{context: %{current_user: current_user}}), do: {:ok, current_user}
 end

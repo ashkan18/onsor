@@ -2,6 +2,7 @@ import axios from 'axios'
 import User from '../models/user'
 
 export default class AuthService {
+  TOKEN_KEY = 'id_token'
   constructor() {
     this.login = this.login.bind(this)
   }
@@ -29,8 +30,9 @@ export default class AuthService {
         if(response.data.errors) {
           return rejected(response.data.errors[0].message)
         }
-        this.setToken(response.data.data.token)
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.getToken()
+        let token = response.data.data.login.token
+        this.setToken(token)
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         return resolve(response.data.data.materials)
       })
       .catch( error => {
@@ -64,8 +66,8 @@ export default class AuthService {
         if(response.data.errors) {
           return rejected(response.data.errors[0].message)
         }
-        this.setToken(response.data.data.token)
-        return resolve(response.data.data.materials)
+        this.setToken(response.data.data.createUser.token)
+        return resolve(response.data.data.createUser.token)
       })
       .catch( error => {
         return rejected(error)
@@ -73,7 +75,11 @@ export default class AuthService {
     )
   }
 
-  public me(){
+  public logout(){
+    localStorage.removeItem(this.TOKEN_KEY)
+  }
+
+  public me(): Promise<User>{
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.getToken()
     return new Promise((resolve, rejected) =>
       axios({
@@ -82,7 +88,7 @@ export default class AuthService {
         data: {
           query: `
             query me{
-              me() {
+              me {
                 id
                 name
               }
@@ -90,22 +96,18 @@ export default class AuthService {
           `
         }
       })
-      .then( response => {
-        return resolve(response.data.data.me)
-      })
-      .catch( error => {
-        return rejected(error)
-      })
+      .then( response => resolve(response.data.data.me))
+      .catch( error => rejected(error) )
     )
   }
 
   setToken = (idToken: string) => {
     // Saves user token to localStorage
-    localStorage.setItem('id_token', idToken)
+    localStorage.setItem(this.TOKEN_KEY, idToken)
   }
 
   getToken():string|null {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('id_token')
+    return localStorage.getItem(this.TOKEN_KEY)
   }
 }
