@@ -18,7 +18,7 @@ import "phoenix_html"
 
 import React from "react"
 import ReactDOM from "react-dom"
-import { Theme, injectGlobalStyles } from "@artsy/palette"
+import { Theme, injectGlobalStyles, Grid } from "@artsy/palette"
 import { Route, Switch } from "react-router";
 import { BrowserRouter as Router} from "react-router-dom"
 import Home from "./materialist/pages/home";
@@ -26,20 +26,22 @@ import MaterialPage from "./materialist/pages/material_page";
 import Login from "./materialist/pages/login";
 import Signup from "./materialist/pages/signup";
 
-const GlobalStyles = injectGlobalStyles()
-
+const { GlobalStyles } = injectGlobalStyles()
 class App extends React.Component {
   render() {
     return (
       <Theme style={{width: "100%"}}>
-        <Router>
-          <Switch>
-            <Route path="/materials/:materialId" component={MaterialPage}/>
-            <Route path="/login" exact component={Login} />
-            <Route path="/signup" exact component={Signup} />
-            <Route path="/" component={Home}/>
-          </Switch>
-        </Router>
+        <Grid fluid>
+          <GlobalStyles />
+          <Router>
+            <Switch>
+              <Route path="/materials/:materialId" component={MaterialPage}/>
+              <Route path="/login" exact component={Login} />
+              <Route path="/signup" exact component={Signup} />
+              <Route path="/" component={Home}/>
+            </Switch>
+          </Router>
+        </Grid>
       </Theme>
     )
   }

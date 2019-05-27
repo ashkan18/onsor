@@ -9,6 +9,8 @@ import {
   Button,
 } from "@artsy/palette"
 import Header from "../components/header";
+import MaterialCard from "../components/material_card";
+import styled from 'styled-components';
 
 
 interface Props {
@@ -41,21 +43,12 @@ export default class MaterialPage extends React.Component<Props, State>{
     } else if(material) {
       return(
         <>
-          <Header/>
+          <Header noLogin={false}/>
           <Flex flexDirection="row" justifyContent="space-between">
-            <Box style={{flexGrow: 1}}>
-              {material.photos.map( p => <Image src={p["large"]} sizes="large" /> ) }
+            <Box>
+              {material.photos.map( p => <StyledImage src={p["large"]}/> ) }
             </Box>
-            <BorderBox>
-              <Flex flexDirection="column" style={{width: 200}} justifyContent="flex-start">
-                <Sans size="5">{material.name}</Sans>
-                <Sans size="5">{material.type}</Sans>
-                <Sans size="5">{material.texture}</Sans>
-                <Sans size="5">{material.finish}</Sans>
-                <Sans size="5">Offerd By: {material.vendor.name}</Sans>
-                <Button size="small" my={1} width={100}>Contact</Button>
-              </Flex>
-            </BorderBox>
+            <MaterialCard material={material}/>
           </Flex>
         </>
       )
@@ -70,3 +63,8 @@ export default class MaterialPage extends React.Component<Props, State>{
       .catch( _error => console.log(_error) )
   }
 }
+
+
+const StyledImage = styled(Image)`
+  max-width: 450px
+`;

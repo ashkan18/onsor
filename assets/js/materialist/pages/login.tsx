@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Flex, Button, Separator } from "@artsy/palette"
+import { Flex, Button, Input, BorderBox } from "@artsy/palette"
 import { Link } from 'react-router-dom';
 import AuthService from "../services/auth_service";
 import styled from "styled-components";
@@ -27,14 +27,15 @@ export default class Login extends React.Component<{}, State>{
       <>
         { this.state.loggedIn && <Redirect to={'/'}/> }
         <Header noLogin={true}/>
-        <Flex flexDirection="column">
-          { this.state.error}
-          <StyledInput type="text" onChange={e => this.setUsername(e.target.value)} placeholder="UserName" value={this.state.username}/>
-          <StyledInput type="password" onChange={e => this.setPassword(e.target.value)} placeholder="Password" value={this.state.password}/>
-        </Flex>
-        <Button size="large" onClick={ _e => this.login() } mt={3}>Login</Button>
-        <Separator/>
-        Don't have an account? click <Link to={'/signup'}>here</Link>
+        <BorderBox>
+          <Flex flexDirection="column">
+            { this.state.error}
+            <Input onChange={e => this.setUsername(e.currentTarget.value)} placeholder="Email" value={this.state.username}/>
+            <Input onChange={e => this.setPassword(e.currentTarget.value)} placeholder="Password" value={this.state.password} type="password"/>
+            <Button size="large" onClick={ _e => this.login() } mt={3}>Login</Button>
+            <>Don't have an account? click <Link to={'/signup'}>here</Link></>
+          </Flex>
+        </BorderBox>
       </>
     )
   }
@@ -52,8 +53,3 @@ export default class Login extends React.Component<{}, State>{
       .catch( (error) => this.setState({error}))
   }
 }
-
-const StyledInput = styled.input`
-  ${borderedInput};
-  ${block(14)};
-`

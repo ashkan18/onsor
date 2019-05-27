@@ -1,12 +1,10 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import Material from "../models/material";
 import MaterialService from "../services/material_service";
-import { Spinner, Flex, BorderBox, Sans, Checkbox, Button, Box } from "@artsy/palette";
+import { Spinner, Flex, BorderBox, Sans, Checkbox, Button, Box, Input } from "@artsy/palette";
 import { ColorResult, CirclePicker } from 'react-color';
 import MaterialWall from "./material_wall";
 import styled from "styled-components";
-import { borderedInput } from "./mixins";
-import { block } from "./helpers";
 
 interface Color {
   r: number
@@ -62,7 +60,7 @@ export default class Search extends React.Component<{}, State>{
         <BorderBox flexGrow={1}>
           { loadingFilters ? '' :
             <Flex flexDirection="column" alignContent="space-around">
-              <StyledInput type="text" onChange={e => this.setTerm(e.target.value)} placeholder="Search" value={this.state.searchTerm}/>
+              <Input onChange={this.setTerm} placeholder="Search" value={this.state.searchTerm}/>
               <Sans size='5'>Types</Sans>
               {types.map( t => <Checkbox key={t} selected={this.state.selectedTypes.has(t)} onSelect={ _e => this.toggleType(t)}> {t} </Checkbox>)}
               <Sans size='5'>Finishes</Sans>
@@ -122,8 +120,8 @@ export default class Search extends React.Component<{}, State>{
     }
   }
 
-  private setTerm(term: string) {
-    this.setState({searchTerm: term})
+  private setTerm(termEvent: FormEvent<HTMLInputElement>) {
+    this.setState({searchTerm: termEvent.currentTarget.value})
   }
 
   private searchFilter() {
@@ -149,11 +147,6 @@ export default class Search extends React.Component<{}, State>{
       .catch( _error => console.log(_error) )
   }
 }
-
-const StyledInput = styled.input`
-  ${borderedInput};
-  ${block(24)};
-`
 
 const StyledColorPicker = styled(CirclePicker)`
 `

@@ -11,6 +11,7 @@ import React from "react"
 import Material from '../models/material';
 import { Truncator } from "./truncator";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 interface Props {
   material: Material
@@ -19,7 +20,7 @@ interface Props {
 const MaterialBrick = (props: Props) => {
   let material = props.material
   return (
-    <Link to={`/materials/${material.id}`}>
+    <StyledLink to={`/materials/${material.id}`}>
       <BorderBox hover flexDirection="column">
         <Serif size="3t" weight="semibold">
           <Truncator maxLineCount={1}>{material.name}</Truncator>
@@ -37,8 +38,16 @@ const MaterialBrick = (props: Props) => {
         </Serif>
         <Button size="small" my={1} width={100}>Contact</Button>
       </BorderBox>
-    </Link>
+    </StyledLink>
   )
 }
 
 export default MaterialBrick
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
+`;

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Flex, Button } from "@artsy/palette"
+import { Flex, Button, Input, BorderBox } from "@artsy/palette"
 import AuthService from "../services/auth_service";
 import styled from "styled-components";
 import { borderedInput } from "../components/mixins";
@@ -28,14 +28,16 @@ export default class Signup extends React.Component<{}, State>{
       <>
         { this.state.loggedIn && <Redirect to={'/'}/> }
         <Header noLogin={true}/>
-        <Flex flexDirection="column">
-          { this.state.error}
-          <StyledInput type="email" onChange={e => this.setUsername(e.target.value)} placeholder="UserName" value={this.state.username}/>
-          <StyledInput type="text" onChange={e => this.setName(e.target.value)} placeholder="Name" value={this.state.name}/>
-          <StyledInput type="password" onChange={e => this.setPassword(e.target.value)} placeholder="Password" value={this.state.password}/>
-          <StyledInput type="password" onChange={e => this.setpasswordConfirmation(e.target.value)} placeholder="Password Confirmation" value={this.state.passwordConfirmation}/>
-        </Flex>
-        <Button size="large" onClick={ _e => this.signup() } mt={3}>Signup!</Button>
+        <BorderBox flexDirction="column">
+          <Flex flexDirection="column" width={'80%'}>
+            { this.state.error}
+            <Input type="email" onChange={e => this.setUsername(e.currentTarget.value)} title="UserName" value={this.state.username}/>
+            <Input type="text" onChange={e => this.setName(e.currentTarget.value)} title="Name" value={this.state.name}/>
+            <Input type="password" onChange={e => this.setPassword(e.currentTarget.value)} title="Password" value={this.state.password}/>
+            <Input type="password" onChange={e => this.setpasswordConfirmation(e.currentTarget.value)} title="Password Confirmation" value={this.state.passwordConfirmation}/>
+            <Button size="large" onClick={ _e => this.signup() } mt={3}>Signup!</Button>
+          </Flex>
+        </BorderBox>
       </>
     )
   }
@@ -59,8 +61,3 @@ export default class Signup extends React.Component<{}, State>{
       .catch( (error) => this.setState({error}))
   }
 }
-
-const StyledInput = styled.input`
-  ${borderedInput};
-  ${block(14)};
-`
