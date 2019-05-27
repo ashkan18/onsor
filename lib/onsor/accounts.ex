@@ -104,8 +104,8 @@ defmodule Onsor.Accounts do
   end
 
   def authenticate_user(username, given_password) do
-    with user when not is_nil(user) <- Repo.get_by(User, username: username),
-      {:ok, user} <- check_password(user, given_password) do
+    with user when not is_nil(user) <- Repo.get_by(User, username: username) do
+      check_password(user, given_password)
     else
       _ -> {:error, "Invalid User or Password"}
     end

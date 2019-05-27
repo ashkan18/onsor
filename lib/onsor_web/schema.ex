@@ -48,6 +48,11 @@ defmodule OnsorWeb.Schema do
       arg(:id, non_null(:id))
       resolve(&Resolvers.Material.find_material/3)
     end
+
+    @desc "My user info"
+    field :me, :user do
+      resolve(&Resolvers.UserResolver.current_user/3)
+    end
   end
 
   mutation do

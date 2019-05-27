@@ -26,11 +26,11 @@ export default class AuthService {
         }
       })
       .then( response => {
-        console.log(response.data.errors)
         if(response.data.errors) {
           return rejected(response.data.errors[0].message)
         }
         this.setToken(response.data.data.token)
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.getToken()
         return resolve(response.data.data.materials)
       })
       .catch( error => {
@@ -74,7 +74,29 @@ export default class AuthService {
   }
 
   public me(){
-    return null
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.getToken()
+    return new Promise((resolve, rejected) =>
+      axios({
+        url: "/api",
+        method: "post",
+        data: {
+          query: `
+            query me{
+              me() {
+                id
+                name
+              }
+            }
+          `
+        }
+      })
+      .then( response => {
+        return resolve(response.data.data.me)
+      })
+      .catch( error => {
+        return rejected(error)
+      })
+    )
   }
 
   setToken = (idToken: string) => {

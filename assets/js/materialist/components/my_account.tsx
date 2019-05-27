@@ -16,7 +16,7 @@ export default class MyAccount extends React.Component<{}, State>{
     super(props, context)
     let token = this.authService.getToken()
     this.state = { isLoggedIn: token !== null, user: null }
-    //if (this.state.isLoggedIn) this.fetchUser()
+    if (this.state.isLoggedIn) this.fetchUser()
   }
 
   public render(){
@@ -39,8 +39,8 @@ export default class MyAccount extends React.Component<{}, State>{
   }
 
   private fetchUser(){
-    // this.authService.me()
-    //   .then(user => this.setState({user}))
-    //   .catch(_error => this.setState({isLoggedIn: false, user: null}))
+    this.authService.me()
+      .then(user => this.setState({user}))
+      .catch(_error => this.setState({isLoggedIn: false, user: null}))
   }
 }

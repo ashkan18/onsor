@@ -1,4 +1,4 @@
-defmodule AprWeb.GraphQLContextPlug do
+defmodule OnsorWeb.GraphQLContextPlug do
   @behaviour Plug
 
   import Plug.Conn
@@ -9,6 +9,7 @@ defmodule AprWeb.GraphQLContextPlug do
   def call(conn, _) do
     case build_context(conn) do
       {:ok, context} ->
+        IO.inspect(context)
         put_private(conn, :absinthe, %{context: context})
 
       _ ->
