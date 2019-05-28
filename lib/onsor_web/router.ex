@@ -35,9 +35,11 @@ defmodule OnsorWeb.Router do
       parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
       pass: ["*/*"],
       json_decoder: Poison
+
     plug Guardian.Plug.Pipeline,
       module: OnsorWeb.Guardian,
       error_handler: OnsorWeb.AuthErrorHandler
+
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
     plug(Guardian.Plug.LoadResource, allow_blank: true)
   end

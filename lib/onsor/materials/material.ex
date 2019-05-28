@@ -17,6 +17,8 @@ defmodule Onsor.Materials.Material do
     field :finish, :string
     field :texture, :string
     field :photos, {:array, :map}
+    field :price_cents, :integer
+    field :price_currency, :string
 
     belongs_to :vendor, Onsor.Partners.Vendor
 
@@ -24,11 +26,12 @@ defmodule Onsor.Materials.Material do
   end
 
   @required_fields ~w(name type size_unit finish texture vendor_id)a
-  @optional_fields ~w(description compositions colors photos)a
+  @optional_fields ~w(description compositions colors photos price_currency price_cents)a
   @doc false
   def changeset(material, attrs) do
     material
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:price_currency, is: 3)
   end
 end

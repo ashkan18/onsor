@@ -1,6 +1,5 @@
 defmodule OnsorWeb.Resolvers.Material do
   def search_filter(_parent, args, _resolution) do
-    IO.inspect(args)
     {:ok, Onsor.Materials.filter_search_materials(Map.to_list(args))}
   end
 

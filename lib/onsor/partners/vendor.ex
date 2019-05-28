@@ -4,6 +4,7 @@ defmodule Onsor.Partners.Vendor do
 
   schema "vendors" do
     field :name, :string
+    has_many :materials, Onsor.Materials.Material
 
     timestamps()
   end

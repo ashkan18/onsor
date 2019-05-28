@@ -9,6 +9,14 @@
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
+  <%= label f, :price_cents %>
+  <%= text_input f, :price_cents %>
+  <%= error_tag f, :price_cents %>
+
+  <%= label f, :price_currency %>
+  <%= text_input f, :price_currency %>
+  <%= error_tag f, :price_currency %>
+
   <%= label f, :vendor %>
   <%= select f, :vendor_id, Enum.map(@vendors, fn v -> {v.name, v.id} end) %>
   <%= error_tag f, :size_unit %>

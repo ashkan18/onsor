@@ -1,5 +1,6 @@
 defmodule OnsorWeb.Schema do
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
 
   import_types(OnsorWeb.Schema.JSON)
   import_types(OnsorWeb.Schema.PartnerTypes)
@@ -9,9 +10,10 @@ defmodule OnsorWeb.Schema do
   alias OnsorWeb.Resolvers
 
   query do
-    @desc "Get all vendors"
-    field :vendors, list_of(:vendor) do
-      resolve(&Resolvers.Partner.vendors/3)
+    @desc "Get vendor details by id"
+    field :vendor, :vendor do
+      arg(:id, non_null(:id))
+      resolve(&Resolvers.Partner.vendor_detail/3)
     end
 
     @desc "Get types"

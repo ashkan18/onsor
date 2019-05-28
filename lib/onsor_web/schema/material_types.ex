@@ -14,6 +14,8 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :texture, :string
     field :photos, :json
     field :vendor, :vendor
+    field :price_cents, :integer
+    field :price_currency, :string
   end
 
   input_object :color_input do
