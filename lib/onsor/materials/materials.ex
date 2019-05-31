@@ -88,7 +88,6 @@ defmodule Onsor.Materials do
       |> List.first()
       |> Map.get("medium")
       |> Onsor.Helper.temp_file_from_url()
-      |> IO.inspect()
       |> Mogrify.open()
       |> Mogrify.histogram()
       |> Enum.sort(fn a, b -> a["count"] > b["count"] end)

@@ -13,9 +13,11 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :finish, :string
     field :texture, :string
     field :photos, :json
-    field :vendor, :vendor
     field :price_cents, :integer
     field :price_currency, :string
+    field :vendor, :vendor do
+      resolve(&OnsorWeb.Resolvers.Material.vendor/3)
+    end
   end
 
   input_object :color_input do

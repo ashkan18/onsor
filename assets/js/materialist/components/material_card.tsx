@@ -1,7 +1,5 @@
 import {
   BorderBox,
-  Box,
-  Image,
   Sans,
   Serif,
   Button,

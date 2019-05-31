@@ -10,4 +10,13 @@ defmodule OnsorWeb.Resolvers.Material do
   def types(_, _, _), do: {:ok, Onsor.Materials.Material.types()}
   def textures(_, _, _), do: {:ok, Onsor.Materials.Material.textures()}
   def finishes(_, _, _), do: {:ok, Onsor.Materials.Material.finishes()}
+
+  def vendor(material, _, _) do
+    vendor =
+      material
+      |> Ecto.assoc(:vendor)
+      |> Onsor.Repo.one
+
+    {:ok, vendor}
+  end
 end
