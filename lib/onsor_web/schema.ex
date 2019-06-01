@@ -9,6 +9,19 @@ defmodule OnsorWeb.Schema do
 
   alias OnsorWeb.Resolvers
 
+  def context(ctx) do
+    loader =
+      Dataloader.new
+      |> Dataloader.add_source(Vendor, Onsor.Partners.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
+
+
   query do
     @desc "Get vendor details by id"
     field :vendor, :vendor do

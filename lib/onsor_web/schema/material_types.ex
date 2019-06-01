@@ -1,5 +1,7 @@
 defmodule OnsorWeb.Schema.MaterialTypes do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
+
 
   @desc "A Material"
   object :material do
@@ -15,9 +17,7 @@ defmodule OnsorWeb.Schema.MaterialTypes do
     field :photos, :json
     field :price_cents, :integer
     field :price_currency, :string
-    field :vendor, :vendor do
-      resolve(&OnsorWeb.Resolvers.Material.vendor/3)
-    end
+    field :vendor, :vendor, resolve: dataloader(Vendor)
   end
 
   input_object :color_input do

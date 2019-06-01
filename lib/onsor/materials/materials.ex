@@ -23,7 +23,6 @@ defmodule Onsor.Materials do
     Material
     |> filter_query(criteria)
     |> Repo.all()
-    |> Repo.preload(:vendor)
   end
 
   def filter_query(query, criteria), do: Enum.reduce(criteria, query, &material_query/2)

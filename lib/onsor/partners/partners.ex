@@ -101,4 +101,8 @@ defmodule Onsor.Partners do
   def change_vendor(%Vendor{} = vendor) do
     Vendor.changeset(vendor, %{})
   end
+
+  def data() do
+    Dataloader.Ecto.new(Repo)
+  end
 end
