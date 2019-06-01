@@ -77,7 +77,7 @@ export default class Search extends React.Component<{}, State>{
             </Flex>
           }
         </BorderBox>
-        { loadingMaterials ? <Spinner size="medium"/> : <MaterialWall materials={materials}/> }
+        { loadingMaterials ? <Spinner size="medium"/> : <MaterialWall materials={materials} withVendor={true}/> }
       </Flex>
     )
   }

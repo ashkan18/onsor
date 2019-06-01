@@ -4,9 +4,6 @@ import MaterialService from "../services/material_service"
 import Material from "../models/material"
 import {
   Image,
-  Sans,
-  Serif,
-  Button,
 } from "@artsy/palette"
 import Header from "../components/header";
 import MaterialCard from "../components/material_card";

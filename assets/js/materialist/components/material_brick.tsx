@@ -15,19 +15,20 @@ import styled from "styled-components";
 
 interface Props {
   material: Material
+  withVendor: boolean
 }
 
 const MaterialBrick = (props: Props) => {
-  let material = props.material
+  let {material, withVendor} = props
   return (
     <StyledLink to={`/materials/${material.id}`}>
       <BorderBox hover flexDirection="column">
         <Serif size="3t" weight="semibold">
           <Truncator maxLineCount={1}>{material.name}</Truncator>
         </Serif>
-        <Sans size="2" weight="medium">
+        {withVendor && <Sans size="2" weight="medium">
           <Truncator maxLineCount={1}>By: {material.vendor.name}</Truncator>
-        </Sans>
+        </Sans>}
         {material.photos.length > 0 ?
           <Box style={{marginTop: 10}}>
             <Image src={material.photos[0]["medium"]} />

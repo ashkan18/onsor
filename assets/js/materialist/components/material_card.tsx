@@ -8,6 +8,8 @@ import {
 import React from "react"
 import Material from '../models/material';
 import { Truncator } from "./truncator";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 
 interface Props {
@@ -24,8 +26,8 @@ const MaterialCard = (props: Props) => {
       <Serif size="3t" mb={2}>
         <Truncator maxLineCount={1}>{material.type}</Truncator>
       </Serif>
-      <Sans size="2" weight="medium">
-        <Truncator maxLineCount={1}>Offered By: {material.vendor.name}</Truncator>
+      <Sans size="2">
+        Offered By: <StyledLink to={`/vendors/${material.vendor.id}`}>{material.vendor.name}</StyledLink>
       </Sans>
       <Button size="small" my={1} width={100}>Contact</Button>
     </BorderBox>
@@ -33,3 +35,11 @@ const MaterialCard = (props: Props) => {
 }
 
 export default MaterialCard
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
+`;

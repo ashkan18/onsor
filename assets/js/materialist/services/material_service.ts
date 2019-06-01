@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Material from '../models/material';
+import Vendor from '../models/vendor';
 
 interface Color {
   r: number
@@ -109,7 +110,46 @@ export default class MaterialService {
         }
       })
       .then( response => {
+        console.log(response.data.data)
         return resolve(response.data.data.material)
+      })
+      .catch( error => {
+        return rejected(error)
+      })
+    )
+  }
+
+  public vendorMaterials(vendorId: string): Promise<Vendor> {
+    return new Promise((resolve, rejected) =>
+      axios({
+        url: "/api",
+        method: "post",
+        data: {
+          query: `
+            query vendor{
+              vendor(id: ${vendorId}) {
+                id
+                name
+                materials(first: 50){
+                  edges{
+                    node{
+                      id
+                      name
+                      description
+                      photos
+                      texture
+                      finish
+                      type
+                    }
+                  }
+                }
+              }
+            }
+          `
+        }
+      })
+      .then( response => {
+        return resolve(response.data.data.vendor)
       })
       .catch( error => {
         return rejected(error)
