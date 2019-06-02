@@ -6,6 +6,7 @@ defmodule OnsorWeb.Schema do
   import_types(OnsorWeb.Schema.PartnerTypes)
   import_types(OnsorWeb.Schema.MaterialTypes)
   import_types(OnsorWeb.Schema.AccountTypes)
+  import_types(OnsorWeb.Schema.InquiryTypes)
 
   alias OnsorWeb.Resolvers
 
@@ -13,6 +14,8 @@ defmodule OnsorWeb.Schema do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(Vendor, Onsor.Partners.data())
+      |> Dataloader.add_source(Material, Onsor.Materials.data())
+      |> Dataloader.add_source(User, Onsor.Accounts.data())
 
     Map.put(ctx, :loader, loader)
   end
