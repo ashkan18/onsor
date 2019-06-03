@@ -42,7 +42,8 @@ config :phoenix, :json_library, Jason
 
 # In your config/config.exs file
 config :onsor, Onsor.Mailer,
-  adapter: Bamboo.SesAdapter,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: System.get_env("SMTP_API_KEY"),
   # can be `:always` or `:never`
   tls: :if_available,
   # can be `true`

@@ -55,8 +55,7 @@ defmodule Onsor.MixProject do
       {:dataloader, "~> 1.0.0"},
       {:poison, "~> 3.1"},
       {:mogrify, "~> 0.7.0"},
-      {:bamboo, "~> 1.2"},
-      {:bamboo_ses, "~> 0.1.0"}
+      {:bamboo, "~> 1.2"}
     ]
   end
 
