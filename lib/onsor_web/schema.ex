@@ -6,13 +6,16 @@ defmodule OnsorWeb.Schema do
   import_types(OnsorWeb.Schema.PartnerTypes)
   import_types(OnsorWeb.Schema.MaterialTypes)
   import_types(OnsorWeb.Schema.AccountTypes)
+  import_types(OnsorWeb.Schema.InquiryTypes)
 
   alias OnsorWeb.Resolvers
 
   def context(ctx) do
     loader =
-      Dataloader.new
+      Dataloader.new()
       |> Dataloader.add_source(Vendor, Onsor.Partners.data())
+      |> Dataloader.add_source(Material, Onsor.Materials.data())
+      |> Dataloader.add_source(User, Onsor.Accounts.data())
 
     Map.put(ctx, :loader, loader)
   end
@@ -20,7 +23,6 @@ defmodule OnsorWeb.Schema do
   def plugins do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
-
 
   query do
     @desc "Get vendor details by id"
@@ -87,6 +89,13 @@ defmodule OnsorWeb.Schema do
       arg(:password, non_null(:string))
 
       resolve(&Resolvers.UserResolver.login/2)
+    end
+
+    @desc "Inquiry on a material"
+    field :inquiry, type: :inquiry do
+      arg(:material_id, non_null(:string))
+
+      resolve(&Resolvers.InquiryResolver.create/2)
     end
   end
 end

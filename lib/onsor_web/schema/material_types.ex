@@ -2,7 +2,6 @@ defmodule OnsorWeb.Schema.MaterialTypes do
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
-
   @desc "A Material"
   object :material do
     field :id, :string

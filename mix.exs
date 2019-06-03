@@ -54,7 +54,9 @@ defmodule Onsor.MixProject do
       {:absinthe_relay, "~> 1.4.0-rc or ~> 1.4"},
       {:dataloader, "~> 1.0.0"},
       {:poison, "~> 3.1"},
-      {:mogrify, "~> 0.7.0"}
+      {:mogrify, "~> 0.7.0"},
+      {:bamboo, "~> 1.2"},
+      {:bamboo_ses, "~> 0.1.0"}
     ]
   end
 

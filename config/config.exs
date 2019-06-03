@@ -40,6 +40,15 @@ config :ex_aws,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# In your config/config.exs file
+config :onsor, Onsor.Mailer,
+  adapter: Bamboo.SesAdapter,
+  # can be `:always` or `:never`
+  tls: :if_available,
+  # can be `true`
+  ssl: false,
+  retries: 1
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

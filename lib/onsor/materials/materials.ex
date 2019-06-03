@@ -176,4 +176,8 @@ defmodule Onsor.Materials do
   def change_material(%Material{} = material) do
     Material.changeset(material, %{})
   end
+
+  def data() do
+    Dataloader.Ecto.new(Repo)
+  end
 end

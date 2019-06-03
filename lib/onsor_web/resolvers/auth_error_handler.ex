@@ -1,4 +1,4 @@
-defmodule OnsorWeb.AuthErrorHandler do
+defmodule OnsorWeb.ApiAuthErrorHandler do
   @moduledoc false
 
   def auth_error(conn, {_type, _reason}, _opts) do
@@ -6,6 +6,7 @@ defmodule OnsorWeb.AuthErrorHandler do
     IO.inspect(_reason)
 
     conn
-    |> Phoenix.Controller.redirect(to: "/login")
+    |> Plug.Conn.resp(403, "Not found")
+    |> Plug.Conn.send_resp()
   end
 end
