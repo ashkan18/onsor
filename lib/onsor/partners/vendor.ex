@@ -13,7 +13,7 @@ defmodule Onsor.Partners.Vendor do
   @doc false
   def changeset(vendor, attrs) do
     vendor
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :inquiry_email])
+    |> validate_required([:name, :inquiry_email])
   end
 end

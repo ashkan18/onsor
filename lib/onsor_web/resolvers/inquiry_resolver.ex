@@ -4,8 +4,10 @@ defmodule OnsorWeb.Resolvers.InquiryResolver do
 
   def create(%{material_id: material_id}, %{context: %{current_user: current_user}}) do
     with {:ok, inquiry} <- Inquiries.create_inquiry(%{material_id: material_id, user_id: current_user.id}) do
-      Email.inquiry(inquiry)
-        |> Mailer.deliver_now()
+      inquiry
+      |> Repo.preload(material: [:vendor], user: [])
+      |> Email.inquiry()
+      |> Mailer.deliver_now()
       {:ok, inquiry}
     else
       _ -> {:error, "Could Not Inquiry"}

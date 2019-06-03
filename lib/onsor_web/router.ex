@@ -41,7 +41,7 @@ defmodule OnsorWeb.Router do
       put "/upload", Admin.MaterialController, :upload, as: :upload
     end
 
-    resources "/*path", Admin.DashboardController, only: [:index]
+    resources "/", Admin.DashboardController, only: [:index]
   end
 
   pipeline :api do
