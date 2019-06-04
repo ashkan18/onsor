@@ -51,7 +51,7 @@ export default class MaterialPage extends React.Component<Props, State>{
           <Header noLogin={false}/>
           <Flex flexDirection="row" justifyContent="space-between">
             <Box>
-              {material.photos.map( p => <StyledImage src={p["large"]}/> ) }
+              {material.photos.map( p => <StyledImage src={p["medium"]}/> ) }
             </Box>
             <MaterialCard material={material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
           </Flex>
