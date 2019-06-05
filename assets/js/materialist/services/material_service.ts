@@ -1,6 +1,43 @@
 import axios from 'axios'
 import Material from '../models/material';
 import Vendor from '../models/vendor';
+import gql from 'graphql-tag';
+
+export const SEARCH_MATERIALS_QUERY = gql`
+  query materials($type: [String], $texture: [String], $finish: [String], $color: ColorInput){
+      materials(type: $type, texture: $texture, finish: $finish, color: $color) {
+        id
+        name
+        description
+        texture
+        finish
+        type
+        photos
+        vendor {
+          id
+          name
+        }
+      }
+    }
+`
+
+export const FIND_MATERIAL_QUERY = gql`
+  query material($id: ID!){
+    material(id: $id) {
+      id
+      name
+      description
+      photos
+      texture
+      finish
+      type
+      vendor {
+        id
+        name
+      }
+    }
+  }
+`
 
 interface Color {
   r: number
@@ -28,22 +65,22 @@ export default class MaterialService {
         method: "post",
         data: {
           query: `
-            query materials($type: [String], $texture: [String], $finish: [String], $color: ColorInput){
-              materials(type: $type, texture: $texture, finish: $finish, color: $color) {
+          query materials($type: [String], $texture: [String], $finish: [String], $color: ColorInput){
+            materials(type: $type, texture: $texture, finish: $finish, color: $color) {
+              id
+              name
+              description
+              texture
+              finish
+              type
+              photos
+              vendor {
                 id
                 name
-                description
-                texture
-                finish
-                type
-                photos
-                vendor {
-                  id
-                  name
-                }
               }
             }
-          `,
+          }
+        `,
           variables: {
             type: args.type,
             texture: args.texture,

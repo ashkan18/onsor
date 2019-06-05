@@ -19,32 +19,41 @@ import "phoenix_html"
 import React from "react"
 import ReactDOM from "react-dom"
 import { Theme, injectGlobalStyles, Grid } from "@artsy/palette"
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router"
 import { BrowserRouter as Router} from "react-router-dom"
-import Home from "./materialist/pages/home";
-import MaterialPage from "./materialist/pages/material_page";
-import Login from "./materialist/pages/login";
-import Signup from "./materialist/pages/signup";
-import VendorPage from "./materialist/pages/vendor";
+import Home from "./materialist/pages/home"
+import MaterialPage from "./materialist/pages/material_page"
+import Login from "./materialist/pages/login"
+import Signup from "./materialist/pages/signup"
+import VendorPage from "./materialist/pages/vendor"
+
+import ApolloClient, { gql } from "apollo-boost"
+import { ApolloProvider } from "react-apollo"
+
+const client = new ApolloClient({
+  uri: "/api"
+})
 
 const { GlobalStyles } = injectGlobalStyles()
 class App extends React.Component {
   render() {
     return (
-      <Theme style={{width: "100%"}}>
-        <Grid fluid>
-          <GlobalStyles />
-          <Router>
-            <Switch>
-              <Route path="/materials/:materialId" component={MaterialPage}/>
-              <Route path="/vendors/:vendorId" component={VendorPage}/>
-              <Route path="/login" exact component={Login} />
-              <Route path="/signup" exact component={Signup} />
-              <Route path="/" component={Home}/>
-            </Switch>
-          </Router>
-        </Grid>
-      </Theme>
+      <ApolloProvider client={client}>
+        <Theme style={{width: "100%"}}>
+          <Grid fluid>
+            <GlobalStyles />
+            <Router>
+              <Switch>
+                <Route path="/materials/:materialId" component={MaterialPage}/>
+                <Route path="/vendors/:vendorId" component={VendorPage}/>
+                <Route path="/login" exact component={Login} />
+                <Route path="/signup" exact component={Signup} />
+                <Route path="/" component={Home}/>
+              </Switch>
+            </Router>
+          </Grid>
+        </Theme>
+      </ApolloProvider>
     )
   }
 }

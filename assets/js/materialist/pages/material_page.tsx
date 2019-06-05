@@ -1,6 +1,6 @@
 import * as React from "react"
-import { Spinner, Flex, BorderBox, Box } from "@artsy/palette"
-import MaterialService from "../services/material_service"
+import { Spinner, Flex, Box } from "@artsy/palette"
+import MaterialService, { FIND_MATERIAL_QUERY } from "../services/material_service"
 import Material from "../models/material"
 import {
   Image,
@@ -9,6 +9,7 @@ import Header from "../components/header";
 import MaterialCard from "../components/material_card";
 import styled from 'styled-components';
 import InquiryService from "../services/inquiry_service";
+import { Query } from "react-apollo";
 
 
 interface Props {
@@ -17,18 +18,15 @@ interface Props {
 
 interface State {
   isLoaded: boolean
-  material?: Material
   inquired: boolean
   inquiring: boolean
 }
 
 export default class MaterialPage extends React.Component<Props, State>{
-  materialService: MaterialService
   inquiryService: InquiryService
 
   public constructor(props: Props, context: any) {
     super(props, context)
-    this.materialService = new MaterialService()
     this.inquiryService = new InquiryService()
     this.onInquiry = this.onInquiry.bind(this)
     this.state = {
@@ -37,35 +35,28 @@ export default class MaterialPage extends React.Component<Props, State>{
       inquiring: false
     }
   }
-  public componentDidMount() {
-    this.getMaterial()
-  }
 
   public render(){
-    const { isLoaded, material } = this.state
-    if (!isLoaded) {
-      return( <Spinner size="medium"/> )
-    } else if(material) {
-      return(
-        <>
-          <Header noLogin={false}/>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Box>
-              {material.photos.map( p => <StyledImage src={p["medium"]}/> ) }
-            </Box>
-            <MaterialCard material={material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
-          </Flex>
-        </>
-      )
-    }
-  }
+    return(
+      <Query query={FIND_MATERIAL_QUERY} variables={{id: this.props.match.params.materialId}}>
+        {({ loading, error, data }) => {
+          if (loading) return <Spinner size="large"/>;
+          if (error) return `Error! ${error}`;
 
-  private getMaterial() {
-    this.materialService.findMaterial(this.props.match.params.materialId)
-      .then( material => {
-        this.setState({material, isLoaded: true})
-      })
-      .catch( _error => console.log(_error) )
+          return (
+            <>
+              <Header noLogin={false}/>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Box>
+                  {data.material.photos.map( p => <StyledImage src={p["medium"]}/> ) }
+                </Box>
+                <MaterialCard material={data.material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
+              </Flex>
+            </>
+          );
+        }}
+      </Query>
+    )
   }
 
   public onInquiry(materialId: string){
