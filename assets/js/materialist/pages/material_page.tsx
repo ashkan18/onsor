@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Spinner, Flex, Box } from "@artsy/palette"
-import MaterialService, { FIND_MATERIAL_QUERY } from "../services/material_service"
-import Material from "../models/material"
+import { FIND_MATERIAL_QUERY } from "../services/material_service"
 import {
   Image,
 } from "@artsy/palette"
@@ -53,7 +52,7 @@ export default class MaterialPage extends React.Component<Props, State>{
                 <MaterialCard material={data.material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
               </Flex>
             </>
-          );
+          )
         }}
       </Query>
     )
