@@ -27,11 +27,32 @@ import Login from "./materialist/pages/login"
 import Signup from "./materialist/pages/signup"
 import VendorPage from "./materialist/pages/vendor"
 
-import ApolloClient, { gql } from "apollo-boost"
+import ApolloClient from "apollo-client"
+import { setContext } from 'apollo-link-context'
 import { ApolloProvider } from "react-apollo"
+import AuthService from "./materialist/services/auth_service"
+import { createHttpLink } from "apollo-link-http"
+import { InMemoryCache } from 'apollo-cache-inmemory'
+
+const httpLink = createHttpLink({
+  uri: '/api',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = (new AuthService).getToken()
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
 
 const client = new ApolloClient({
-  uri: "/api"
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
 })
 
 const { GlobalStyles } = injectGlobalStyles()

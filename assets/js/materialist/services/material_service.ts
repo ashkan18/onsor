@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Material from '../models/material';
 import Vendor from '../models/vendor';
 import gql from 'graphql-tag';
 
@@ -47,6 +46,28 @@ export const FILTERS_QUERY = gql`
   }
 `
 
+export const VENDOR_MATERIAL = gql`
+  query vendor($vendorId: ID!){
+    vendor(id: $vendorId) {
+      id
+      name
+      materials(first: 50){
+        edges{
+          node{
+            id
+            name
+            description
+            photos
+            texture
+            finish
+            type
+          }
+        }
+      }
+    }
+  }
+`
+
 interface Color {
   r: number
   g: number
@@ -59,43 +80,4 @@ interface SearchFilters {
   finish?: Array<string>
   term?: string
   color?: Color
-}
-export default class MaterialService {
-  public vendorMaterials(vendorId: string): Promise<Vendor> {
-    return new Promise((resolve, rejected) =>
-      axios({
-        url: "/api",
-        method: "post",
-        data: {
-          query: `
-            query vendor{
-              vendor(id: ${vendorId}) {
-                id
-                name
-                materials(first: 50){
-                  edges{
-                    node{
-                      id
-                      name
-                      description
-                      photos
-                      texture
-                      finish
-                      type
-                    }
-                  }
-                }
-              }
-            }
-          `
-        }
-      })
-      .then( response => {
-        return resolve(response.data.data.vendor)
-      })
-      .catch( error => {
-        return rejected(error)
-      })
-    )
-  }
 }

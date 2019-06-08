@@ -1,5 +1,4 @@
 import React, { FormEvent } from "react";
-import Material from "../models/material";
 import { FILTERS_QUERY, SEARCH_MATERIALS_QUERY } from "../services/material_service";
 import { Spinner, Flex, BorderBox, Sans, Checkbox, Button, Box, Input } from "@artsy/palette";
 import { ColorResult, CirclePicker } from 'react-color';
@@ -15,12 +14,6 @@ interface Color {
 
 
 interface State {
-  materials: Array<Material>
-  types: Array<string>
-  textures: Array<string>
-  finishes: Array<string>
-  loadingMaterials: boolean
-  loadingFilters: boolean
   searchTerm: string | undefined
   selectedTypes: Set<string>
   selectedTextures: Set<string>
@@ -33,12 +26,6 @@ export default class Search extends React.Component<{}, State>{
     super(props, context)
     this.handleColorPickerChange = this.handleColorPickerChange.bind(this)
     this.state = {
-      materials: [],
-      types: [],
-      textures: [],
-      finishes: [],
-      loadingMaterials: false,
-      loadingFilters: true,
       searchTerm: undefined,
       selectedTypes: new Set(),
       selectedTextures: new Set(),

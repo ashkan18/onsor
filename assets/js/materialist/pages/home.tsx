@@ -11,7 +11,7 @@ export default class Home extends React.Component<{}, {}>{
   public render(){
     return(
       <>
-        <Header/>
+        <Header noLogin={false}/>
         <Flex flexDirection="row">
           <Search/>
         </Flex>
