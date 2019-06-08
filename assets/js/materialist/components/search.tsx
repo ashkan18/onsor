@@ -1,10 +1,10 @@
 import React, { FormEvent } from "react";
-import Material from "../models/material";
-import MaterialService from "../services/material_service";
+import { FILTERS_QUERY, SEARCH_MATERIALS_QUERY } from "../services/material_service";
 import { Spinner, Flex, BorderBox, Sans, Checkbox, Button, Box, Input } from "@artsy/palette";
 import { ColorResult, CirclePicker } from 'react-color';
 import MaterialWall from "./material_wall";
 import styled from "styled-components";
+import { Query } from "react-apollo";
 
 interface Color {
   r: number
@@ -14,12 +14,6 @@ interface Color {
 
 
 interface State {
-  materials: Array<Material>
-  types: Array<string>
-  textures: Array<string>
-  finishes: Array<string>
-  loadingMaterials: boolean
-  loadingFilters: boolean
   searchTerm: string | undefined
   selectedTypes: Set<string>
   selectedTextures: Set<string>
@@ -28,19 +22,10 @@ interface State {
 }
 
 export default class Search extends React.Component<{}, State>{
-  MaterialService: MaterialService
-
   public constructor(props: {}, context: any) {
     super(props, context)
-    this.MaterialService = new MaterialService()
     this.handleColorPickerChange = this.handleColorPickerChange.bind(this)
     this.state = {
-      materials: [],
-      types: [],
-      textures: [],
-      finishes: [],
-      loadingMaterials: false,
-      loadingFilters: true,
       searchTerm: undefined,
       selectedTypes: new Set(),
       selectedTextures: new Set(),
@@ -48,38 +33,46 @@ export default class Search extends React.Component<{}, State>{
       selectedColor: null
     }
   }
-  public componentDidMount() {
-    this.searchFilter()
-    this.getFilters()
-  }
 
   public render(){
-    const { loadingMaterials, loadingFilters, materials, types, textures, finishes } = this.state
     return(
-      <Flex flexDirection="row" justifyContent="space-between" width="100%">
-        <BorderBox flexGrow={1}>
-          { loadingFilters ? '' :
+    <Flex flexDirection="row" justifyContent="space-between" width="100%">
+      <BorderBox flexGrow={1}>
+        <Query query={FILTERS_QUERY}>
+          {({ loading, error, data }) => {
+          if (loading) return <Spinner size="small"/>;
+          if (error) return `Error! ${error}`;
+
+          return (
             <Flex flexDirection="column" alignContent="space-around">
               <Input onChange={this.setTerm} placeholder="Search" value={this.state.searchTerm}/>
               <Sans size='5'>Types</Sans>
-              {types.map( t => <Checkbox key={t} selected={this.state.selectedTypes.has(t)} onSelect={ _e => this.toggleType(t)}> {t} </Checkbox>)}
+              {data.types.map( (t: string) => <Checkbox key={t} selected={this.state.selectedTypes.has(t)} onSelect={ _e => this.toggleType(t)}> {t} </Checkbox>)}
               <Sans size='5'>Finishes</Sans>
-              {finishes.map( t => <Checkbox key={t} selected={this.state.selectedFinishes.has(t)} onSelect={ _e => this.toggleFinish(t)}> {t} </Checkbox>)}
+              {data.finishes.map( (t: string) => <Checkbox key={t} selected={this.state.selectedFinishes.has(t)} onSelect={ _e => this.toggleFinish(t)}> {t} </Checkbox>)}
               <Sans size='5'>Textures</Sans>
-              {textures.map( t => <Checkbox key={t} selected={this.state.selectedTextures.has(t)} onSelect={ _e => this.toggleTexture(t)}> {t} </Checkbox>)}
+              {data.textures.map( (t: string) => <Checkbox key={t} selected={this.state.selectedTextures.has(t)} onSelect={ _e => this.toggleTexture(t)}> {t} </Checkbox>)}
               <Sans size='5'>Color</Sans>
               <Box>
                 <StyledColorPicker
                   color={ this.state.selectedColor ? this.state.selectedColor.rgb : undefined }
                   onChangeComplete={ this.handleColorPickerChange }/>
               </Box>
-              <Button size="small" onClick={ _e => this.searchFilter() } mt={3}>Search</Button>
+              <Button size="small" onClick={ _e => null } mt={3}>Search</Button>
             </Flex>
-          }
-        </BorderBox>
-        { loadingMaterials ? <Spinner size="medium"/> : <MaterialWall materials={materials} withVendor={true}/> }
-      </Flex>
-    )
+          )
+        }}
+        </Query>
+      </BorderBox>
+      <Query query={SEARCH_MATERIALS_QUERY} variables={{term: this.state.searchTerm, type: Array.from(this.state.selectedTypes.values()), texture: Array.from(this.state.selectedTextures.values()), finish: Array.from(this.state.selectedFinishes.values()), color: this.state.selectedColor ? this.state.selectedColor.rgb : undefined}}>
+        {({ loading, error, data }) => {
+          if (loading) return <Spinner size="medium"/>;
+          if (error) return `Error! ${error}`;
+
+          return(<MaterialWall materials={data.materials} withVendor={true}/>)
+        }}
+      </Query>
+    </Flex>)
   }
 
   private toggleType(type: string) {
@@ -122,29 +115,6 @@ export default class Search extends React.Component<{}, State>{
 
   private setTerm(termEvent: FormEvent<HTMLInputElement>) {
     this.setState({searchTerm: termEvent.currentTarget.value})
-  }
-
-  private searchFilter() {
-    this.setState({loadingMaterials: true})
-    this.MaterialService.searchFilter({
-      term: this.state.searchTerm,
-      type: Array.from(this.state.selectedTypes.values()),
-      texture: Array.from(this.state.selectedTextures.values()),
-      finish: Array.from(this.state.selectedFinishes.values()),
-      color: this.state.selectedColor ? this.state.selectedColor.rgb : undefined})
-      .then( materials => {
-        this.setState({materials, loadingMaterials: false})
-      })
-      .catch( _error => this.setState({loadingMaterials: false}) )
-  }
-
-  private getFilters(){
-    this.setState({loadingFilters: true})
-    this.MaterialService.getFilters()
-      .then( filters => {
-        this.setState({types: filters.types, textures: filters.textures, finishes: filters.finishes, loadingFilters: false})
-      })
-      .catch( _error => console.log(_error) )
   }
 }
 
