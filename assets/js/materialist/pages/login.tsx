@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Flex, Button, Input, BorderBox, Separator } from "@artsy/palette"
+import { Flex, Button, Input, BorderBox, Separator, Join, Spacer } from "@artsy/palette"
 import { Link } from 'react-router-dom';
 import AuthService from "../services/auth_service";
 import styled from "styled-components";
@@ -27,13 +27,13 @@ export default class Login extends React.Component<{}, State>{
       <>
         { this.state.loggedIn && <Redirect to={'/'}/> }
         <Header noLogin={true}/>
-        <Flex flexDirection="column" justify-content="center">
+        <Join separator={<Spacer m={1} />}>
           { this.state.error}
           <Input onChange={e => this.setUsername(e.currentTarget.value)} placeholder="Email" value={this.state.username}/>
           <Input onChange={e => this.setPassword(e.currentTarget.value)} placeholder="Password" value={this.state.password} type="password"/>
-          <Button size="large" onClick={ _e => this.login() } mt={3}>Login</Button>
+          <Button size="medium" onClick={ _e => this.login() }>Login</Button>
           <>Don't have an account? click <Link to={'/signup'}>here</Link></>
-        </Flex>
+        </Join>
       </>
     )
   }

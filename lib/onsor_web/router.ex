@@ -26,8 +26,12 @@ defmodule OnsorWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :admin_layout do
+    plug :put_layout, {OnsorWeb.LayoutView, :admin}
+  end
+
   scope "/admin", OnsorWeb, as: :admin do
-    pipe_through([:browser, :maybe_browser_auth])
+    pipe_through([:browser, :maybe_browser_auth, :admin_layout])
 
     get("/login", Admin.LoginController, :index)
     post("/login", Admin.LoginController, :login)
