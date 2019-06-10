@@ -18,7 +18,7 @@ import "phoenix_html"
 
 import React from "react"
 import ReactDOM from "react-dom"
-import { Theme, injectGlobalStyles, Grid } from "@artsy/palette"
+import { Theme, injectGlobalStyles, Box } from "@artsy/palette"
 import { Route, Switch } from "react-router"
 import { BrowserRouter as Router} from "react-router-dom"
 import Home from "./materialist/pages/home"
@@ -61,7 +61,7 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <Theme style={{width: "100%"}}>
-          <Grid fluid>
+          <Box m={1}>
             <GlobalStyles />
             <Router>
               <Switch>
@@ -72,7 +72,7 @@ class App extends React.Component {
                 <Route path="/" component={Home}/>
               </Switch>
             </Router>
-          </Grid>
+          </Box>
         </Theme>
       </ApolloProvider>
     )

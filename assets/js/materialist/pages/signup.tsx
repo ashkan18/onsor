@@ -1,9 +1,6 @@
 import * as React from "react"
-import { Flex, Button, Input, BorderBox, Join, Spacer } from "@artsy/palette"
+import { Flex, Button, Input, Join, Spacer, Box } from "@artsy/palette"
 import AuthService from "../services/auth_service";
-import styled from "styled-components";
-import { borderedInput } from "../components/mixins";
-import { block } from "../components/helpers";
 import Header from "../components/header";
 import { Redirect } from "react-router";
 
@@ -28,14 +25,16 @@ export default class Signup extends React.Component<{}, State>{
       <>
         { this.state.loggedIn && <Redirect to={'/'}/> }
         <Header noLogin={true}/>
-        <Join separator={<Spacer m={1} />}>
-          { this.state.error}
-          <Input type="text" onChange={e => this.setName(e.currentTarget.value)} title="Name" value={this.state.name}/>
-          <Input type="email" onChange={e => this.setUsername(e.currentTarget.value)} title="Username" value={this.state.username}/>
-          <Input type="password" onChange={e => this.setPassword(e.currentTarget.value)} title="Password" value={this.state.password}/>
-          <Input type="password" onChange={e => this.setpasswordConfirmation(e.currentTarget.value)} title="Password Confirmation" value={this.state.passwordConfirmation}/>
-          <Button size="medium" onClick={ _e => this.signup() } mt={1}>Signup!</Button>
-        </Join>
+        <Box m={3} mt={6}>
+          <Join separator={<Spacer m={1} />}>
+            { this.state.error}
+            <Input type="text" onChange={e => this.setName(e.currentTarget.value)} title="Name" value={this.state.name}/>
+            <Input type="email" onChange={e => this.setUsername(e.currentTarget.value)} title="Username" value={this.state.username}/>
+            <Input type="password" onChange={e => this.setPassword(e.currentTarget.value)} title="Password" value={this.state.password}/>
+            <Input type="password" onChange={e => this.setpasswordConfirmation(e.currentTarget.value)} title="Password Confirmation" value={this.state.passwordConfirmation}/>
+            <Button size="medium" onClick={ _e => this.signup() } mt={1}>Signup!</Button>
+          </Join>
+        </Box>
       </>
     )
   }

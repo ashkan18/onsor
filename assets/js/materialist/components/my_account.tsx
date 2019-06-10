@@ -27,7 +27,7 @@ export default class MyAccount extends React.Component<{}, State>{
         {!isLoggedIn &&
           <Flex flexDirection="row" justifyContent="space-between" width={150} mt={0} mb={0}>
             <Link to={'/login'}>
-              <Button size="small">Login</Button>
+              <Button variant="secondaryOutline" size="small">Login</Button>
             </Link>
             <Link to={'/signup'}>
               <Button size="small">SignUp</Button>
@@ -40,7 +40,11 @@ export default class MyAccount extends React.Component<{}, State>{
   private fetchUser(){
     this.authService.me()
       .then(user => this.setState({user}))
-      .catch(_error => this.setState({isLoggedIn: false, user: null}))
+      .catch(_error => {
+        // log user out just in case
+        this.logout()
+        this.setState({isLoggedIn: false, user: null})
+      })
   }
 
   private logout(){
