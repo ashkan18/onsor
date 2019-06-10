@@ -39,18 +39,19 @@ export default class MaterialPage extends React.Component<Props, State>{
     return(
       <Query query={FIND_MATERIAL_QUERY} variables={{id: this.props.match.params.materialId}}>
         {({ loading, error, data }) => {
-          if (loading) return <Spinner size="large"/>;
-          if (error) return `Error! ${error}`;
-
           return (
             <>
               <Header noLogin={false}/>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Box>
-                  {data.material.photos.map( p => <StyledImage src={p["medium"]}/> ) }
-                </Box>
-                <MaterialCard material={data.material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
-              </Flex>
+              { loading && <Spinner size="large"/>}
+              { error && <> Error! {error} </>}
+              { !error && !loading && data &&
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <Box>
+                    {data.material.photos.map( p => <StyledImage src={p["medium"]}/> ) }
+                  </Box>
+                  <MaterialCard material={data.material} onInquiry={this.onInquiry} inquired={this.state.inquired} loading={this.state.inquiring}/>
+                </Flex>
+              }
             </>
           )
         }}
