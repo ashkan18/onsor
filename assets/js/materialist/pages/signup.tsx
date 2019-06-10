@@ -28,16 +28,14 @@ export default class Signup extends React.Component<{}, State>{
       <>
         { this.state.loggedIn && <Redirect to={'/'}/> }
         <Header noLogin={true}/>
-        <BorderBox flexDirction="column">
-          <Flex flexDirection="column" width={'80%'}>
-            { this.state.error}
-            <Input type="email" onChange={e => this.setUsername(e.currentTarget.value)} title="UserName" value={this.state.username}/>
-            <Input type="text" onChange={e => this.setName(e.currentTarget.value)} title="Name" value={this.state.name}/>
-            <Input type="password" onChange={e => this.setPassword(e.currentTarget.value)} title="Password" value={this.state.password}/>
-            <Input type="password" onChange={e => this.setpasswordConfirmation(e.currentTarget.value)} title="Password Confirmation" value={this.state.passwordConfirmation}/>
-            <Button size="large" onClick={ _e => this.signup() } mt={3}>Signup!</Button>
-          </Flex>
-        </BorderBox>
+        <Flex flexDirection="column" width={'80%'}>
+          { this.state.error}
+          <Input type="email" onChange={e => this.setUsername(e.currentTarget.value)} title="UserName" value={this.state.username}/>
+          <Input type="text" onChange={e => this.setName(e.currentTarget.value)} title="Name" value={this.state.name}/>
+          <Input type="password" onChange={e => this.setPassword(e.currentTarget.value)} title="Password" value={this.state.password}/>
+          <Input type="password" onChange={e => this.setpasswordConfirmation(e.currentTarget.value)} title="Password Confirmation" value={this.state.passwordConfirmation}/>
+          <Button size="large" onClick={ _e => this.signup() } mt={3}>Signup!</Button>
+        </Flex>
       </>
     )
   }

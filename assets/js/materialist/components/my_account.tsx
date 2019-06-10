@@ -22,10 +22,10 @@ export default class MyAccount extends React.Component<{}, State>{
   public render(){
     const { user, isLoggedIn } = this.state
     return (
-      <div>
+      <>
         {isLoggedIn && user && <Button size="small" onClick={this.logout}> Logout </Button>}
         {!isLoggedIn &&
-          <Flex flexDirection="row" justifyContent="space-between" width={150} mt={1}>
+          <Flex flexDirection="row" justifyContent="space-between" width={150} mt={0} mb={0}>
             <Link to={'/login'}>
               <Button size="small">Login</Button>
             </Link>
@@ -33,7 +33,7 @@ export default class MyAccount extends React.Component<{}, State>{
               <Button size="small">SignUp</Button>
             </Link>
           </Flex>}
-      </div>
+      </>
     )
   }
 
