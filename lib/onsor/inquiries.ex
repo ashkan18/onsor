@@ -4,9 +4,10 @@ defmodule Onsor.Inquiries do
   """
 
   import Ecto.Query, warn: false
-  alias Onsor.Repo
 
   alias Onsor.Inquiries.Inquiry
+  alias Onsor.{Mailer, Repo}
+  alias OnsorWeb.Email
 
   @doc """
   Returns the list of inquiries.
@@ -36,6 +37,25 @@ defmodule Onsor.Inquiries do
 
   """
   def get_inquiry!(id), do: Repo.get!(Inquiry, id)
+
+  def process_inquiry(user_id, material_id, quantity, initial_message \\ "") do
+    with {:ok, inquiry} <-
+           create_inquiry(%{
+             material_id: material_id,
+             user_id: user_id,
+             quantity: quantity,
+             initial_message: initial_message
+           }) do
+      inquiry
+      |> Repo.preload(material: [:vendor], user: [])
+      |> Email.inquiry()
+      |> Mailer.deliver_now()
+
+      {:ok, inquiry}
+    else
+      _ -> {:error, "Could Not Inquiry"}
+    end
+  end
 
   @doc """
   Creates a inquiry.

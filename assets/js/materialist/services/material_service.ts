@@ -1,5 +1,3 @@
-import axios from 'axios'
-import Vendor from '../models/vendor';
 import gql from 'graphql-tag';
 
 export const SEARCH_MATERIALS_QUERY = gql`

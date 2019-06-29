@@ -61,9 +61,11 @@ defmodule OnsorWeb.Router do
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
     plug(Guardian.Plug.LoadResource, allow_blank: true)
   end
+
   pipeline :graphql do
     plug OnsorWeb.GraphQLContextPlug
   end
+
   # Other scopes may use custom stacks.
   scope "/api" do
     pipe_through [:api, :graphql]

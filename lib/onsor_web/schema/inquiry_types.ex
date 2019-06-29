@@ -7,5 +7,7 @@ defmodule OnsorWeb.Schema.InquiryTypes do
     field :id, :string
     field :material, :material, resolve: dataloader(Material)
     field :user, :user, resolve: dataloader(User)
+    field :quantity, :integer
+    field :initial_message, :string
   end
 end

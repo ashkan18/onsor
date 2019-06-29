@@ -1,0 +1,10 @@
+<div class="inquiry-details">
+  You've received an inquiry from: <%= @inquiry.user.name %> on following material:
+  <div class="inquiry-material-details">
+    <div><%= @inquiry.material.name %></div>
+    <div>Requested Quantity: <%= @inquiry.quantity %> </div>
+    <div><quote><%= @inquiry.initial_message %></quote></div>
+    <div> <img src="<%= List.first(@inquiry.material.photos)["medium"] %>"/> </div>
+  </div>
+</div>
+<p><%= link "Reply In CMS", to: "admin" %></p>

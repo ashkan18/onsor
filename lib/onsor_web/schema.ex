@@ -94,6 +94,8 @@ defmodule OnsorWeb.Schema do
     @desc "Inquiry on a material"
     field :inquiry, type: :inquiry do
       arg(:material_id, non_null(:string))
+      arg(:initial_message, non_null(:string))
+      arg(:quantity, :integer)
 
       resolve(&Resolvers.InquiryResolver.create/2)
     end

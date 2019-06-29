@@ -11,7 +11,7 @@ export default class InquiryService {
     return new Promise((resolve, rejected) => {
       let token = this.authService.getToken()
       if (token == null){
-        return rejected("Login pleas")
+        return rejected("Login please")
       }
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
       return axios({
@@ -19,14 +19,16 @@ export default class InquiryService {
         method: "post",
         data: {
           query: `
-            mutation inquiry($materialId: ID!){
-              inquiry(materialId: $materialId){
+            mutation inquiry($materialId: ID!, $initialMessage: String, $quantity: Int!){
+              inquiry(materialId: $materialId, initialMessage: $initialMessage, quantity: $quantity){
                 id
               }
             }
           `,
           variables: {
-            materialId
+            materialId,
+            initialMessage: "Hi Im interested in this thingy",
+            quantity: 30
           }
         }
       })

@@ -26,7 +26,7 @@ export default class Login extends React.Component<{}, State>{
         <Header noLogin={true}/>
         <Box m={3} mt={6}>
           <Join separator={<Spacer m={1} />}>
-            { this.state.error}
+            { this.state.error && <> {this.state.error} </> }
             <Input onChange={e => this.setUsername(e.currentTarget.value)} placeholder="Email" value={this.state.username}/>
             <Input onChange={e => this.setPassword(e.currentTarget.value)} placeholder="Password" value={this.state.password} type="password"/>
             <Button size="medium" onClick={ _e => this.login() }>Login</Button>
