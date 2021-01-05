@@ -10,7 +10,7 @@
     "apollo-boost": "^0.4.1",
     "apollo-link": "^1.2.11",
     "apollo-link-context": "^1.0.17",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "graphql": "^14.3.1",
     "luxon": "^1.16.0",
     "phoenix": "file:../deps/phoenix",
